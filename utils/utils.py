@@ -27,7 +27,7 @@ def formatter(root_path, manifest_file, **kwargs):
     return items
 
 
-def sliding_window(iterable, n):
+def sliding_window(iterable: iter, n: int) -> iter:
     # sliding_window('ABCDEFG', 4) --> ABCD BCDE CDEF DEFG
     it = iter(iterable)
     window = collections.deque(islice(it, n), maxlen=n)
@@ -38,7 +38,7 @@ def sliding_window(iterable, n):
         yield tuple(window)
 
 
-def seed_all(seed):
+def seed_all(seed) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)

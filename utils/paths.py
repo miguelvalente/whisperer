@@ -16,15 +16,14 @@ class DefaultPaths:
             self.AUDIO_FILES_WAV,
         ]
 
-
-    def _make_paths(self):
+    def _make_paths(self) -> None:
         self._assert_mandatory_paths()
         self._ensure_audio_files_are_present()
 
         for path in self.paths:
             path.mkdir(exist_ok=True)
 
-    def _assert_mandatory_paths(self):
+    def _assert_mandatory_paths(self) -> None:
         for path in self.mandatory_paths:
             assert path.exists(), f"Path {path} does not exist"
 
@@ -32,14 +31,29 @@ class DefaultPaths:
         if not len(self.get_audio_files()):
             raise FileNotFoundError(f"No audio_files found in {self.AUDIO_FILES}")
 
-    def _assert_wav_files(self, directory: Path):
+    def _assert_wav_files(self, directory: Path) -> None:
         for episode in directory.iterdir():
             assert episode.suffix == ".wav", f"File {episode} is not a .wav file"
 
-    def _touch_metadata(self):
+    def get_audio_files(self) -> List[Path]:
+        return [episode for episode in self.AUDIO_FILES.iterdir() if episode.is_file()]
+
+    def get_audio_files_wav(self) -> List[Path]:
+        self._assert_wav_files(self.AUDIO_FILES_WAV)
+        return [episode for episode in self.AUDIO_FILES_WAV.iterdir()]
+
+class DatasetPaths(DefaultPaths):
+    def __init__(self, main_path, dataset_name):
+        super().__init__(main_path, dataset_name)
+        self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
+        self.METADATA = self.DATASET.joinpath("metadata.txt")
+        self.WAVS = self.DATASET.joinpath("wavs")
+        self.paths = [self.DATASET, self.WAVS]
+
+    def _touch_metadata(self) -> None:
         self.METADATA.touch(exist_ok=True)
 
-    def prepare_for_dataset(self, dataset_name: str):
+    def prepare_for_dataset(self, dataset_name: str) -> None:
         self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
         self.METADATA = self.DATASET.joinpath("metadata.txt")
         self.WAVS = self.DATASET.joinpath("wavs")
@@ -50,14 +64,6 @@ class DefaultPaths:
             self.DATASET.mkdir()
             self.WAVS.mkdir()
             self._touch_metadata()
-
-
-    def get_audio_files(self) -> List[Path]:
-        return [episode for episode in self.AUDIO_FILES.iterdir() if episode.is_file()]
-
-    def get_audio_files_wav(self) -> List[Path]:
-        self._assert_wav_files(self.AUDIO_FILES_WAV)
-        return [episode for episode in self.AUDIO_FILES_WAV.iterdir()]
 
     def get_datasets(self) -> List[Path]:
         return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]

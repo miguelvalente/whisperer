@@ -5,6 +5,7 @@ from whisperer.audio_manipulate import convert
 from whisperer.whisperer import whisperer
 import config.config as CONF
 
+
 def main():
     seed_all(CONF.seed)
     dataset_name = f"{CONF.dataset_name}_{CONF.seed}"
@@ -21,6 +22,7 @@ def main():
     whisperer(paths)
 
     print(f"## Done creating dataset {dataset_name} ##")
+
 
 if __name__ == "__main__":
     main()

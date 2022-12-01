@@ -2,11 +2,11 @@ import torchaudio
 import torch
 import whisper
 import numpy as np
-from typing import Tuple, List
+from typing import Tuple, List, Any
 from collections import deque
 from librosa import effects
 
-from utils.paths import DefaultPaths
+from utils.paths import DatasetPaths
 import config.config as CONF
 
 
@@ -33,7 +33,7 @@ def sampling_seconds(loc: int, scale: int) -> float:
     return seconds
 
 
-def get_silence_pairs(splits):
+def get_silence_pairs(splits) -> List[tuple[int, int]]:
     pairs = []
     splits_iter = iter(splits)
 
@@ -49,15 +49,15 @@ def get_silence_pairs(splits):
     return pairs
 
 
-def find_nearest_value(array: list, value: float):
+def find_nearest_value(array: List, value: float) -> tuple[int, int]:
     array = np.asarray(array)
-    idx,_ = np.abs(array - value).argmin(axis=0)
-    audio_segment_frame = array[idx,0]
-    to_cut_frame = array[idx,1]
-    return audio_segment_frame,  to_cut_frame
+    idx, _ = np.abs(array - value).argmin(axis=0)
+    audio_segment_frame = array[idx, 0]
+    to_cut_frame = array[idx, 1]
+    return audio_segment_frame, to_cut_frame
 
 
-def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> List[torch.Tensor]:
+def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Any, int]]:
     seconds = sampling_seconds(CONF.loc, CONF.scale)
     frame = int(seconds * frame_rate)
 
@@ -66,10 +66,15 @@ def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> List[torch.Tensor
     while not silences:
         if frame * counter > audio.shape[0]:
             return None, 1
-        
-        # lower = frame 
+
+        # lower = frame
         upper = frame + (16000 * counter)
-        voices = effects.split(y=audio[:upper], frame_length=CONF.frame_lenght, top_db=CONF.top_db, hop_length=CONF.hop_length)
+        voices = effects.split(
+            y=audio[:upper],
+            frame_length=CONF.frame_lenght,
+            top_db=CONF.top_db,
+            hop_length=CONF.hop_length,
+        )
 
         silences = get_silence_pairs(voices.tolist())
         counter += 1
@@ -77,7 +82,7 @@ def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> List[torch.Tensor
     return silences, frame
 
 
-def whisperer(paths: DefaultPaths) -> None:
+def whisperer(paths: DatasetPaths) -> None:
     model, options, device = initialize_whisperer()
 
     for audio_file in paths.get_audio_files_wav():
@@ -96,7 +101,9 @@ def whisperer(paths: DefaultPaths) -> None:
                     audio = audio[:frame]
                     continue
                 else:
-                    audio_segment_frame, to_cut_frame = find_nearest_value(silences, frame)
+                    audio_segment_frame, to_cut_frame = find_nearest_value(
+                        silences, frame
+                    )
 
                 audio_segment = audio[:audio_segment_frame]
                 audio = audio[to_cut_frame:]
@@ -116,10 +123,15 @@ def whisperer(paths: DefaultPaths) -> None:
                 results = model.decode(padded_mels, options)
 
                 for result in results:
-                    if len(result.text) < CONF.min_len or len(result.text) > CONF.max_len:
+                    if (
+                        len(result.text) < CONF.min_len
+                        or len(result.text) > CONF.max_len
+                    ):
                         continue
 
-                    export_wav_path = paths.WAVS.joinpath(audio_file.stem + f"_{seg_idx}.wav")
+                    export_wav_path = paths.WAVS.joinpath(
+                        audio_file.stem + f"_{seg_idx}.wav"
+                    )
                     torchaudio.save(
                         export_wav_path, audio_segment.unsqueeze(dim=0), frame_rate
                     )

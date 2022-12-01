@@ -43,8 +43,7 @@ mkdir data/audio_files
 python main.py
 ```
 
-5. Use the Analyse.ipynb notebook to visualize the distribution of the dataset
-
+5. Use the ```Analyse.ipynb``` notebook to visualize the distribution of the dataset
 
 
 
