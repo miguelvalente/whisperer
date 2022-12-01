@@ -1,6 +1,6 @@
 from utils.utils import seed_all
 
-from utils.paths import DefaultPaths
+from utils.paths import DatasetPaths
 from whisperer.audio_manipulate import convert
 from whisperer.whisperer import whisperer
 import config.config as CONF
@@ -11,7 +11,7 @@ def main():
     dataset_name = f"{CONF.dataset_name}_{CONF.seed}"
 
     print(f"#### Starting pipeline to create dataset {dataset_name} ####")
-    paths = DefaultPaths(__file__)
+    paths = DatasetPaths(__file__)
     paths.prepare_for_dataset(dataset_name)
 
     print(f"## Converting files in {paths.AUDIO_FILES} to .wav with frame_rate=16000")
