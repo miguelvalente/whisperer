@@ -56,7 +56,7 @@ Modify `config.py` file to change the parameters of the dataset creation.
 
 - [ ] Speech Diarization
 
-- [ ] Deal with audio segments longer then 30 seconds
+- [ ] Deal with audio segments longer than 30 seconds
 
 
 ## Acknowledgements
