@@ -43,7 +43,7 @@ mkdir data/audio_files
 python main.py
 ```
 
-5. Use the ```Analyse.ipynb``` notebook to visualize the distribution of the dataset
+5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
 
 
 
@@ -54,8 +54,6 @@ Modify `config.py` file to change the parameters of the dataset creation.
 ## To Do
 
 - [ ] Speech Diarization
-
-- [ ] Deal with audio segments longer than 30 seconds
 
 
 ## Acknowledgements
