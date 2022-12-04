@@ -2,11 +2,11 @@ import torchaudio
 import torch
 import whisper
 import numpy as np
-from typing import Tuple, List, Any
+from typing import Tuple, List
 from collections import deque
 from librosa import effects
+from pathlib import Path
 
-from utils.paths import DatasetPaths
 import config.config as CONF
 
 
@@ -82,10 +82,10 @@ def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[
     return silences, frame
 
 
-def whisperer(paths: DatasetPaths) -> None:
+def whisperer(audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path ) -> None:
     model, options, device = initialize_whisperer()
 
-    for audio_file in paths.get_audio_files_wav():
+    for audio_file in audio_files_wav:
         batch = deque(maxlen=CONF.batch_size)
         print(f"\tTranscribing {audio_file.name}")
 
@@ -129,15 +129,16 @@ def whisperer(paths: DatasetPaths) -> None:
                     ):
                         continue
 
-                    export_wav_path = paths.WAVS.joinpath(
+                    export_wav_path = wavs_path.joinpath(
                         audio_file.stem + f"_{seg_idx}.wav"
                     )
                     torchaudio.save(
                         export_wav_path, audio_segment.unsqueeze(dim=0), frame_rate
                     )
 
-                    with open(paths.METADATA, "a") as f:
-                        f.write(f"{export_wav_path.stem}|{result.text}\n")
+                    audio_file.stem
+                    with open(transcription_path.joinpath(f"{audio_file.stem}.txt"), "a") as f:
+                        f.write(f"{export_wav_path.name}|{result.text}\n")
 
                     seg_idx += 1
 

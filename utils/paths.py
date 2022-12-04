@@ -49,9 +49,11 @@ class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):
         super().__init__(main_path)
         self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
-        self.METADATA = self.DATASET.joinpath("metadata.txt")
+        self.TRANSCRIPTIONS = self.DATASET.joinpath("transcriptions")
         self.WAVS = self.DATASET.joinpath("wavs")
-        self.paths = [self.DATASET, self.WAVS]
+        self.METADATA = self.DATASET.joinpath("metadata.txt")
+
+        self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS]
 
     def _touch_metadata(self) -> None:
         self.METADATA.touch(exist_ok=True)
@@ -60,8 +62,7 @@ class DatasetPaths(DefaultPaths):
         if self.DATASET.exists():
             raise FileExistsError(f"Dataset {self.DATASET} already exists")
         else:
-            self.DATASET.mkdir()
-            self.WAVS.mkdir()
+            self._make_paths()
             self._touch_metadata()
 
 

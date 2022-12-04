@@ -2,8 +2,8 @@ seed = 42
 dataset_name = "test"
 
 # batch size for OpenAI's Whisper
-whisper_model = 'large'
-batch_size = 32
+whisper_model = 'base.en'
+batch_size = 1
 
 
 # Configurations to sample audio lengths

@@ -1,6 +1,6 @@
 import os
 import collections
-from itertools import islice
+from itertools import islice, zip_longest
 import random
 import numpy as np
 import torch
@@ -37,6 +37,9 @@ def sliding_window(iterable: iter, n: int) -> iter:
         window.append(x)
         yield tuple(window)
 
+def grouper(n, iterable, padvalue=None):
+    # grouper(3, 'abcdefg', 'x') --> ('a','b','c'), ('d','e','f'), ('g','x','x')
+    return list(zip_longest(*[iter(iterable)]*n, fillvalue=padvalue))
 
 def seed_all(seed) -> None:
     random.seed(seed)
