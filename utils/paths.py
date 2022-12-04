@@ -14,7 +14,10 @@ class DefaultPaths:
         self.mandatory_paths = [self.DATA_PATH, self.AUDIO_FILES]
         self.paths = [
             self.AUDIO_FILES_WAV,
+            self.DATASET_DIR
         ]
+
+        self._make_paths()
 
     def _make_paths(self) -> None:
         self._assert_mandatory_paths()
@@ -44,7 +47,7 @@ class DefaultPaths:
 
 class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):
-        super().__init__(main_path, dataset_name)
+        super().__init__(main_path)
         self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
         self.METADATA = self.DATASET.joinpath("metadata.txt")
         self.WAVS = self.DATASET.joinpath("wavs")
@@ -53,17 +56,14 @@ class DatasetPaths(DefaultPaths):
     def _touch_metadata(self) -> None:
         self.METADATA.touch(exist_ok=True)
 
-    def prepare_for_dataset(self, dataset_name: str) -> None:
-        self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
-        self.METADATA = self.DATASET.joinpath("metadata.txt")
-        self.WAVS = self.DATASET.joinpath("wavs")
-
+    def prepare_for_dataset(self) -> None:
         if self.DATASET.exists():
             raise FileExistsError(f"Dataset {self.DATASET} already exists")
         else:
             self.DATASET.mkdir()
             self.WAVS.mkdir()
             self._touch_metadata()
+
 
     def get_datasets(self) -> List[Path]:
         return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]

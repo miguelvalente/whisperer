@@ -33,7 +33,7 @@ def sampling_seconds(loc: int, scale: int) -> float:
     return seconds
 
 
-def get_silence_pairs(splits) -> List[tuple[int, int]]:
+def get_silence_pairs(splits) -> List[Tuple[int, int]]:
     pairs = []
     splits_iter = iter(splits)
 
@@ -49,7 +49,7 @@ def get_silence_pairs(splits) -> List[tuple[int, int]]:
     return pairs
 
 
-def find_nearest_value(array: List, value: float) -> tuple[int, int]:
+def find_nearest_value(array: List, value: float) -> Tuple[int, int]:
     array = np.asarray(array)
     idx, _ = np.abs(array - value).argmin(axis=0)
     audio_segment_frame = array[idx, 0]
@@ -57,7 +57,7 @@ def find_nearest_value(array: List, value: float) -> tuple[int, int]:
     return audio_segment_frame, to_cut_frame
 
 
-def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Any, int]]:
+def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[int,int]], int]:
     seconds = sampling_seconds(CONF.loc, CONF.scale)
     frame = int(seconds * frame_rate)
 
