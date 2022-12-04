@@ -2,6 +2,7 @@ seed = 42
 dataset_name = "test"
 
 # batch size for OpenAI's Whisper
+whisper_model = 'large'
 batch_size = 32
 
 

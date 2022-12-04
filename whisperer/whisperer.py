@@ -14,7 +14,7 @@ def initialize_whisperer() -> Tuple[whisper.Whisper, whisper.DecodingOptions, st
     print("\tInitializing whisper")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     options = whisper.DecodingOptions(language="en", without_timestamps=True)
-    model = whisper.load_model("base.en")
+    model = whisper.load_model(CONF.whisper_model)
     model = model.to(device)
 
     return model, options, device
