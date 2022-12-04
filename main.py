@@ -12,7 +12,7 @@ def main():
 
     print(f"#### Starting pipeline to create dataset {dataset_name} ####")
     paths = DatasetPaths(__file__, dataset_name)
-    paths.prepare_for_dataset(dataset_name)
+    paths.prepare_for_dataset()
 
     print(f"## Converting files in {paths.AUDIO_FILES} to .wav with frame_rate=16000")
     convert(paths)
