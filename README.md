@@ -45,7 +45,10 @@ python main.py
 
 5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
 
+### Using Multiple-GPUS
 
+The code automatically detects how many GPU's are available and distributes the audio files in ```data/audio_files_wav```.
+The automatic detection is done through ```nvidia-smi```. If you want to make the available GPU's explicit you can set the environment variable ```CUDA_AVAILABLE_DEVICES```.  
 
 ### Configuration
 
