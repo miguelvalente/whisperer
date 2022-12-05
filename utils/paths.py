@@ -35,15 +35,15 @@ class DefaultPaths:
             raise FileNotFoundError(f"No audio_files found in {self.AUDIO_FILES}")
 
     def _assert_wav_files(self, directory: Path) -> None:
-        for episode in directory.iterdir():
-            assert episode.suffix == ".wav", f"File {episode} is not a .wav file"
+        for audio_file in directory.iterdir():
+            assert audio_file.suffix == ".wav", f"File {audio_file} is not a .wav file"
 
     def get_audio_files(self) -> List[Path]:
-        return [episode for episode in self.AUDIO_FILES.iterdir() if episode.is_file()]
+        return [audio_file for audio_file in self.AUDIO_FILES.iterdir() if audio_file.is_file()]
 
     def get_audio_files_wav(self) -> List[Path]:
         self._assert_wav_files(self.AUDIO_FILES_WAV)
-        return [episode for episode in self.AUDIO_FILES_WAV.iterdir()]
+        return [audio_file for audio_file in self.AUDIO_FILES_WAV.iterdir()]
 
 class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):
@@ -60,11 +60,27 @@ class DatasetPaths(DefaultPaths):
 
     def prepare_for_dataset(self) -> None:
         if self.DATASET.exists():
-            raise FileExistsError(f"Dataset {self.DATASET} already exists")
+            pass
+            # raise FileExistsError(f"Dataset {self.DATASET} already exists. Delete folder or choose a different datasetname")
         else:
             self._make_paths()
             self._touch_metadata()
 
+    def get_transcriptions(self) -> List[Path]:
+        return [transcription for transcription in self.TRANSCRIPTIONS.iterdir() if transcription.is_file()]
+
+    def reads_transcriptions(self) -> List[str]:
+        transcriptions = []
+        for transcription in self.get_transcriptions():
+            with open(transcription, "r") as f:
+                transcriptions.append(f.read())
+        return transcriptions
+
+    def write_to_metadata(self) -> None:
+        transcriptions = self.reads_transcriptions()
+        with open(self.METADATA, "a") as f:
+            for transcription in transcriptions:
+                f.write(transcription)
 
     def get_datasets(self) -> List[Path]:
         return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]

@@ -10,14 +10,12 @@ from pathlib import Path
 import config.config as CONF
 
 
-def initialize_whisperer() -> Tuple[whisper.Whisper, whisper.DecodingOptions, str]:
+def initialize_whisperer(device: str) -> Tuple[whisper.Whisper, whisper.DecodingOptions, str]:
     print("\tInitializing whisper")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     options = whisper.DecodingOptions(language="en", without_timestamps=True)
-    model = whisper.load_model(CONF.whisper_model)
-    model = model.to(device)
+    model = whisper.load_model(CONF.whisper_model, device=device)
 
-    return model, options, device
+    return model, options
 
 
 def sampling_seconds(loc: int, scale: int) -> float:
@@ -82,8 +80,8 @@ def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[
     return silences, frame
 
 
-def whisperer(audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path ) -> None:
-    model, options, device = initialize_whisperer()
+def whisperer(audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path , device: str) -> None:
+    model, options = initialize_whisperer(device)
 
     for audio_file in audio_files_wav:
         batch = deque(maxlen=CONF.batch_size)
@@ -142,7 +140,8 @@ def whisperer(audio_files_wav: List[Path], wavs_path: Path, transcription_path: 
 
                     seg_idx += 1
 
-            del padded_mels
-            del results
-            torch.cuda.empty_cache()
+                del padded_mels
+                del results
+                torch.cuda.empty_cache()
+
             batch.clear()
