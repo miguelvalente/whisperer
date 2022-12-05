@@ -90,7 +90,7 @@ def whisperer(
     model, options = initialize_whisperer(device)
 
     if audio_files_wav is None:
-        print("Skipping appended None. Expected behavior")
+        print("\tSkipping appended None. Expected behavior")
         return
 
     for audio_file in audio_files_wav:
