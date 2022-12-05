@@ -12,7 +12,7 @@ import config.config as CONF
 
 def initialize_whisperer(
     device: str,
-) -> Tuple[whisper.Whisper, whisper.DecodingOptions, str]:
+) -> Tuple[whisper.Whisper, whisper.DecodingOptions]:
     print("\tInitializing whisper")
     options = whisper.DecodingOptions(language="en", without_timestamps=True)
     model = whisper.load_model(CONF.whisper_model, device=device)
