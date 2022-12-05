@@ -48,7 +48,9 @@ python main.py
 ### Using Multiple-GPUS
 
 The code automatically detects how many GPU's are available and distributes the audio files in ```data/audio_files_wav``` evenly across the GPUs.
-The automatic detection is done through ```nvidia-smi```. If you want to make the available GPU's explicit you can set the environment variable ```CUDA_AVAILABLE_DEVICES```.  
+The automatic detection is done through ```nvidia-smi```. 
+
+You can to make the available GPU's explicit by setting the environment variable ```CUDA_AVAILABLE_DEVICES```.  
 
 ### Configuration
 
