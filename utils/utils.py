@@ -1,6 +1,6 @@
 import os
 import collections
-from itertools import islice
+from itertools import islice, zip_longest
 import random
 import numpy as np
 import torch
@@ -36,6 +36,23 @@ def sliding_window(iterable: iter, n: int) -> iter:
     for x in it:
         window.append(x)
         yield tuple(window)
+
+
+def grouper(n, iterable, padvalue=None):
+    # grouper(3, 'abcdefg', 'x') --> ('a','b','c'), ('d','e','f'), ('g','x','x')
+    return list(zip_longest(*[iter(iterable)] * n, fillvalue=padvalue))
+
+
+def get_available_gpus():
+    from subprocess import check_output
+    from os import environ
+
+    if "CUDA_VISIBLE_DEVICES" in environ:
+        return len(environ["CUDA_VISIBLE_DEVICES"].split(","))
+    else:
+        command = ["nvidia-smi", "-L"]
+        output = check_output(command)
+        return len(output.splitlines())
 
 
 def seed_all(seed) -> None:

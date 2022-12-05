@@ -2,22 +2,22 @@ import torchaudio
 import torch
 import whisper
 import numpy as np
-from typing import Tuple, List, Any
+from typing import Tuple, List
 from collections import deque
 from librosa import effects
+from pathlib import Path
 
-from utils.paths import DatasetPaths
 import config.config as CONF
 
 
-def initialize_whisperer() -> Tuple[whisper.Whisper, whisper.DecodingOptions, str]:
+def initialize_whisperer(
+    device: str,
+) -> Tuple[whisper.Whisper, whisper.DecodingOptions]:
     print("\tInitializing whisper")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     options = whisper.DecodingOptions(language="en", without_timestamps=True)
-    model = whisper.load_model(CONF.whisper_model)
-    model = model.to(device)
+    model = whisper.load_model(CONF.whisper_model, device=device)
 
-    return model, options, device
+    return model, options
 
 
 def sampling_seconds(loc: int, scale: int) -> float:
@@ -57,7 +57,9 @@ def find_nearest_value(array: List, value: float) -> Tuple[int, int]:
     return audio_segment_frame, to_cut_frame
 
 
-def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[int,int]], int]:
+def find_silent_frame(
+    audio: torch.Tensor, frame_rate: int
+) -> Tuple[List[Tuple[int, int]], int]:
     seconds = sampling_seconds(CONF.loc, CONF.scale)
     frame = int(seconds * frame_rate)
 
@@ -82,10 +84,12 @@ def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[
     return silences, frame
 
 
-def whisperer(paths: DatasetPaths) -> None:
-    model, options, device = initialize_whisperer()
+def whisperer(
+    audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path, device: str
+) -> None:
+    model, options = initialize_whisperer(device)
 
-    for audio_file in paths.get_audio_files_wav():
+    for audio_file in audio_files_wav:
         batch = deque(maxlen=CONF.batch_size)
         print(f"\tTranscribing {audio_file.name}")
 
@@ -129,19 +133,23 @@ def whisperer(paths: DatasetPaths) -> None:
                     ):
                         continue
 
-                    export_wav_path = paths.WAVS.joinpath(
+                    export_wav_path = wavs_path.joinpath(
                         audio_file.stem + f"_{seg_idx}.wav"
                     )
                     torchaudio.save(
                         export_wav_path, audio_segment.unsqueeze(dim=0), frame_rate
                     )
 
-                    with open(paths.METADATA, "a") as f:
-                        f.write(f"{export_wav_path.stem}|{result.text}\n")
+                    audio_file.stem
+                    with open(
+                        transcription_path.joinpath(f"{audio_file.stem}.txt"), "a"
+                    ) as f:
+                        f.write(f"{export_wav_path.name}|{result.text}\n")
 
                     seg_idx += 1
 
-            del padded_mels
-            del results
-            torch.cuda.empty_cache()
+                del padded_mels
+                del results
+                torch.cuda.empty_cache()
+
             batch.clear()
