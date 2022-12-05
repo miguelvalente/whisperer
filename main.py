@@ -1,6 +1,5 @@
 import math
 from multiprocessing import Process
-# import torch.multiprocessing as mp
 
 from utils.utils import grouper, seed_all, get_available_gpus
 from utils.paths import DatasetPaths
@@ -12,7 +11,6 @@ import config.config as CONF
 def main():
     number_of_gpus = get_available_gpus()
 
-    # a function that makes the process to run on a single GPU
     seed_all(CONF.seed)
     dataset_name = f"{CONF.dataset_name}_{CONF.seed}"
 
@@ -20,7 +18,9 @@ def main():
     dataset_paths = DatasetPaths(__file__, dataset_name)
     dataset_paths.prepare_for_dataset()
 
-    print(f"## Converting files in {dataset_paths.AUDIO_FILES} to .wav with frame_rate=16000")
+    print(
+        f"## Converting files in {dataset_paths.AUDIO_FILES} to .wav with frame_rate=16000"
+    )
     convert(dataset_paths)
     print("\t--- Done converting to .wav\n")
 
@@ -29,19 +29,21 @@ def main():
     audio_files = list(dataset_paths.get_audio_files_wav())
 
     groups = grouper(math.ceil(len(audio_files) / number_of_gpus), audio_files)
-    ## Start a instance of whisperer per GPU
+    ## Start a new instance of whisperer per GPU
     processes = []
     for idx, group in enumerate(groups):
         device = f"cuda:{idx}"
-        p = Process(target=whisperer, args=(group, dataset_paths.WAVS, dataset_paths.TRANSCRIPTIONS, device))
+        p = Process(
+            target=whisperer,
+            args=(group, dataset_paths.WAVS, dataset_paths.TRANSCRIPTIONS, device),
+        )
         processes.append(p)
         p.start()
 
     for p in processes:
         p.join()
 
-    ## Reads the text files in the transcriptions directory 
-    metadata = dataset_paths.write_to_metadata()
+    dataset_paths.write_to_metadata()
 
     print(f"## Done creating dataset {dataset_name} ##")
 

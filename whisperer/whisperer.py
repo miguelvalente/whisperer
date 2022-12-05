@@ -10,7 +10,9 @@ from pathlib import Path
 import config.config as CONF
 
 
-def initialize_whisperer(device: str) -> Tuple[whisper.Whisper, whisper.DecodingOptions, str]:
+def initialize_whisperer(
+    device: str,
+) -> Tuple[whisper.Whisper, whisper.DecodingOptions, str]:
     print("\tInitializing whisper")
     options = whisper.DecodingOptions(language="en", without_timestamps=True)
     model = whisper.load_model(CONF.whisper_model, device=device)
@@ -55,7 +57,9 @@ def find_nearest_value(array: List, value: float) -> Tuple[int, int]:
     return audio_segment_frame, to_cut_frame
 
 
-def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[int,int]], int]:
+def find_silent_frame(
+    audio: torch.Tensor, frame_rate: int
+) -> Tuple[List[Tuple[int, int]], int]:
     seconds = sampling_seconds(CONF.loc, CONF.scale)
     frame = int(seconds * frame_rate)
 
@@ -80,7 +84,9 @@ def find_silent_frame(audio: torch.Tensor, frame_rate: int) -> Tuple[List[Tuple[
     return silences, frame
 
 
-def whisperer(audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path , device: str) -> None:
+def whisperer(
+    audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path, device: str
+) -> None:
     model, options = initialize_whisperer(device)
 
     for audio_file in audio_files_wav:
@@ -135,7 +141,9 @@ def whisperer(audio_files_wav: List[Path], wavs_path: Path, transcription_path: 
                     )
 
                     audio_file.stem
-                    with open(transcription_path.joinpath(f"{audio_file.stem}.txt"), "a") as f:
+                    with open(
+                        transcription_path.joinpath(f"{audio_file.stem}.txt"), "a"
+                    ) as f:
                         f.write(f"{export_wav_path.name}|{result.text}\n")
 
                     seg_idx += 1

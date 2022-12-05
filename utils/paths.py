@@ -12,10 +12,7 @@ class DefaultPaths:
         self.DATASET_DIR = self.DATA_PATH.joinpath("datasets")
 
         self.mandatory_paths = [self.DATA_PATH, self.AUDIO_FILES]
-        self.paths = [
-            self.AUDIO_FILES_WAV,
-            self.DATASET_DIR
-        ]
+        self.paths = [self.AUDIO_FILES_WAV, self.DATASET_DIR]
 
         self._make_paths()
 
@@ -39,11 +36,16 @@ class DefaultPaths:
             assert audio_file.suffix == ".wav", f"File {audio_file} is not a .wav file"
 
     def get_audio_files(self) -> List[Path]:
-        return [audio_file for audio_file in self.AUDIO_FILES.iterdir() if audio_file.is_file()]
+        return [
+            audio_file
+            for audio_file in self.AUDIO_FILES.iterdir()
+            if audio_file.is_file()
+        ]
 
     def get_audio_files_wav(self) -> List[Path]:
         self._assert_wav_files(self.AUDIO_FILES_WAV)
         return [audio_file for audio_file in self.AUDIO_FILES_WAV.iterdir()]
+
 
 class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):
@@ -60,14 +62,19 @@ class DatasetPaths(DefaultPaths):
 
     def prepare_for_dataset(self) -> None:
         if self.DATASET.exists():
-            pass
-            # raise FileExistsError(f"Dataset {self.DATASET} already exists. Delete folder or choose a different datasetname")
+            raise FileExistsError(
+                f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name"
+            )
         else:
             self._make_paths()
             self._touch_metadata()
 
     def get_transcriptions(self) -> List[Path]:
-        return [transcription for transcription in self.TRANSCRIPTIONS.iterdir() if transcription.is_file()]
+        return [
+            transcription
+            for transcription in self.TRANSCRIPTIONS.iterdir()
+            if transcription.is_file()
+        ]
 
     def reads_transcriptions(self) -> List[str]:
         transcriptions = []
