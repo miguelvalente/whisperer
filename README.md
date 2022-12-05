@@ -5,7 +5,9 @@ Go from raw audio files to a text-audio dataset automatically with OpenAI's Whis
 
 ## Summary
 
-This repo takes a directory of audio files and converts them to a text-audio dataset. The dataset is split on silences and the text is transcribed using OpenAI's Whisper tool. The output is a text-audio dataset that can be used for training a speech-to-text model. Currently the code only supports single speaker audio files.
+This repo takes a directory of audio files and converts them to a text-audio dataset with normalized distribution of audio lengths. *See AnalyzeDataset for examples of the dataset distributions across audio and text length*
+
+ The dataset is split on silences and the text is transcribed using OpenAI's Whisper tool. The output is a text-audio dataset that can be used for training a speech-to-text model. Currently the code only supports single speaker audio files.
 
 The dataset structure is as follows:
 
