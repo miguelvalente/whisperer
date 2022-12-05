@@ -89,6 +89,10 @@ def whisperer(
 ) -> None:
     model, options = initialize_whisperer(device)
 
+    if audio_files_wav is None:
+        print("Skipping appended None. Expected behavior")
+        return
+
     for audio_file in audio_files_wav:
         batch = deque(maxlen=CONF.batch_size)
         print(f"\tTranscribing {audio_file.name}")
