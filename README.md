@@ -20,10 +20,19 @@ The dataset structure is as follows:
               | -> audio2.wav
               | ...
 ```
-## Configuration
 
 
-### How to use:
+
+## Key Features
+
+* Audio splits on silences
+* Audio splitting is configurable
+* The dataset creation is done so that it follows Gaussian-like distributions on clip length. Which, in turn, can lead to Gaussian-like distributions on the rest of the dataset statistics. Of course, this is highly dependent on your audio sources.
+* Leverages the GPUs available on your machine. GPUs also be set explicitly if you only want to use some.
+
+
+
+## How to use:
 
 1. Clone the repo
 ``` 
