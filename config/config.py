@@ -7,13 +7,13 @@ batch_size = 32
 
 
 # Configurations to sample audio lengths
-loc = 7
-scale = 2
-lower_bound = 1
-upper_bound = 10
+loc = 7             # mean of the normal gaussian for sampling 
+scale = 2           
+lower_bound = 1     # lower bound for truncated gaussian
+upper_bound = 10    # upper bound for truncated gaussian
 
 # Configuration for audio splitter
-frame_lenght = 300
+frame_lenght = 300 
 top_db = 40
 hop_length = 512
 
