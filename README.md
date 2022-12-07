@@ -47,7 +47,7 @@ git clone https://github.com/miguelvalente/whisperer.git
 ```
 2. Install the dependencies
 ```
-conda create -n whisperer python=3.11
+conda create -n whisperer python=3.10
 conda activate whisperer
 pip install -r requirements.txt
 ```
