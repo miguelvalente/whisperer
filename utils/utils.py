@@ -50,10 +50,9 @@ def get_available_gpus():
     if "CUDA_VISIBLE_DEVICES" in environ:
         return len(environ["CUDA_VISIBLE_DEVICES"].split(","))
     else:
-        return 0
-        # command = ["nvidia-smi", "-L"]
-        # output = check_output(command)
-        # return len(output.splitlines())
+        command = ["nvidia-smi", "-L"]
+        output = check_output(command)
+        return len(output.splitlines())
 
 
 def seed_all(seed) -> None:
