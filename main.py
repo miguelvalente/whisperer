@@ -7,6 +7,7 @@ from whisperer.audio_manipulate import convert
 from whisperer.whisperer import whisperer
 import config.config as CONF
 
+
 def main():
     number_of_gpus = get_available_gpus()
 
