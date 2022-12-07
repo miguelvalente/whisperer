@@ -58,24 +58,3 @@ def check_ffmpeg():
         return True
     except OSError as e:
         return False
-
-
-# def convert_to_wav(src: Path, dest: Path, frame_rate: Optional[int] = 16000) -> None:
-#     print(f"\tAudio File already in .wav format: {dest.name}")
-#     print(f"\tFramerate: {frame_rate}")
-#     audio = AudioSegment.from_file(file=src, channels=1)
-#         audio = audio.set_frame_rate(frame_rate)
-#         audio.export(str(dest), format="wav")
-#     else:
-#         print(f"\tUnknown extension: {src.suffix}")
-
-
-# def mp3_to_wav(mp3: Path, wav: Path, frame_rate: Optional[int] = 16000) -> None:
-#     print("Converting: .mp3 to .wav:")
-#     print(f"\tSrc: {str(mp3)} Dest: {str(wav)}")
-#     audio = AudioSegment.from_mp3(mp3, channels=1)
-#     if frame_rate:
-#         print(f"\tFrameRate: {frame_rate}")
-#         audio = audio.set_frame_rate(frame_rate)
-
-#     audio.export(str(wav), format="mp3")
