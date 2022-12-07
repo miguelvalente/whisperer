@@ -24,11 +24,12 @@ def convert_to_wav(src: Path, dest: Path, frame_rate: Optional[int] = 16000) -> 
         opus_to_wav(src, dest, frame_rate)
     elif src.suffix == ".wav":
         print(f"\tAudio File already in .wav format: {dest.name}")
-        print(f"\t\tCopying {src.name} to {dest}")
-        shutil.copy(src, dest)
+        print(f"\tFramerate: {frame_rate}")
+        audio = AudioSegment.from_wav(file=src)
+        audio = audio.set_frame_rate(frame_rate)
+        audio.export(str(dest), format="wav")
     else:
         print(f"\tUnknown extension: {src.suffix}")
-
 
 def opus_to_wav(opus: Path, wav: Path, frame_rate: Optional[int] = 16000) -> None:
     print("Converting .opus to .wav:")
