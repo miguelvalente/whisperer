@@ -46,11 +46,12 @@ peters_1.wav|Explicit is better than implicit.
 git clone https://github.com/miguelvalente/whisperer.git
 ```
 2. Install the dependencies
+      - Install [Poetry](https://python-poetry.org/docs/)
 ```
-conda create -n whisperer python=3.10
-conda activate whisperer
-pip install -r requirements.txt
+cd whisperer
+poetry install
 ```
+
 3. Create data folder and move audio files to it
 ```
 mkdir data

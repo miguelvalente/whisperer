@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "whisperer"
+version = "0.1.0"
+description = "Go from raw audio to a text-audio dataset with OpenAI's Whisper"
+authors = ["miguelvalente <miguelvalente@protonmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python  = ">=3.10,<3.11"
+whisper = {git = "https://github.com/openai/whisper.git"}
+librosa="0.8.0"
+numpy="1.22.3"
+pydub="0.25.1"
+scipy="1.8.0"
+torch="1.13.0"
+torchaudio="0.13.0"
+simple-diarizer = "^0.0.11"
+jupyter = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
