@@ -46,6 +46,8 @@ class DefaultPaths:
         self._assert_wav_files(self.AUDIO_FILES_WAV)
         return [audio_file for audio_file in self.AUDIO_FILES_WAV.iterdir()]
 
+    def get_datasets(self) -> List[Path]:
+        return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]
 
 class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):
@@ -57,10 +59,12 @@ class DatasetPaths(DefaultPaths):
 
         self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS]
 
+        self._prepare_for_dataset()
+
     def _touch_metadata(self) -> None:
         self.METADATA.touch(exist_ok=True)
 
-    def prepare_for_dataset(self) -> None:
+    def _prepare_for_dataset(self) -> None:
         if self.DATASET.exists():
             raise FileExistsError(
                 f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name"
@@ -89,5 +93,3 @@ class DatasetPaths(DefaultPaths):
             for transcription in transcriptions:
                 f.write(transcription)
 
-    def get_datasets(self) -> List[Path]:
-        return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]

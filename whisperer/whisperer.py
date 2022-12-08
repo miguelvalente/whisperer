@@ -1,3 +1,6 @@
+import math
+from multiprocessing import Process
+
 import torchaudio
 import torch
 import whisper
@@ -6,6 +9,7 @@ from typing import Tuple, List
 from collections import deque
 from librosa import effects
 from pathlib import Path
+from utils.utils import get_available_gpus, grouper
 
 import config.config as CONF
 
@@ -83,6 +87,26 @@ def find_silent_frame(
 
     return silences, frame
 
+def transcribe(audio_files: List[Path], wavs_path, transcription_path) -> None:
+    split_audio_files_into_gpus(audio_files, wavs_path, transcription_path)
+
+def split_audio_files_into_gpus(audio_files: List[Path], wavs_path: Path, transcriptions_path: Path) -> None:
+    number_of_gpus = get_available_gpus()
+    print(f"## Detected {number_of_gpus} GPU")
+
+    groups_audio = grouper(math.ceil(len(audio_files) / number_of_gpus), audio_files)
+    processes = []
+    for idx, group_audio in enumerate(groups_audio):
+        device = f"cuda:{idx}"
+        p = Process(
+            target=whisperer,
+            args=(group_audio, wavs_path, transcriptions_path, device),
+        )
+        processes.append(p)
+        p.start()
+
+    for p in processes:
+        p.join()
 
 def whisperer(
     audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path, device: str
@@ -130,7 +154,7 @@ def whisperer(
 
                 results = model.decode(padded_mels, options)
 
-                for result in results:
+                for idx, result in enumerate(results):
                     if (
                         len(result.text) < CONF.min_len
                         or len(result.text) > CONF.max_len
@@ -141,7 +165,7 @@ def whisperer(
                         audio_file.stem + f"_{seg_idx}.wav"
                     )
                     torchaudio.save(
-                        export_wav_path, audio_segment.unsqueeze(dim=0), frame_rate
+                        export_wav_path, batch[idx].unsqueeze(dim=0), frame_rate
                     )
 
                     audio_file.stem

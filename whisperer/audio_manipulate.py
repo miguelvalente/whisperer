@@ -1,8 +1,7 @@
 from pathlib import Path
-import shutil
 from utils.paths import DefaultPaths
 from typing import Optional, List
-import torch
+import torchaudio
 import subprocess
 
 
@@ -14,7 +13,7 @@ def convert(paths: DefaultPaths) -> None:
 
         if export_path.exists():
             if check_wav_16khz_mono(export_path):
-                print(f"\tAudio File already in .wav format: {export_path.name} ")
+                print(f"\tAudio File already in correct .wav format: {export_path.name} ")
             else:
                 convert_to_wav(audio_file, export_path, frame_rate=16000)
         else:
@@ -38,17 +37,6 @@ def check_wav_16khz_mono(audio_file: Path) -> bool:
         return False
 
 
-def convert_to_wav(
-    audio_file: Path, converted_audio_file: Path, frame_rate: Optional[int] = 16000
-) -> None:
-    """
-    Converts file to 16khz single channel mono wav
-    """
-    command = f"ffmpeg -y -i {audio_file} -acodec pcm_s16le -ar {frame_rate} -ac 1 {converted_audio_file}"
-
-    subprocess.Popen(command, shell=True).wait()
-
-
 def check_ffmpeg():
     """
     Returns True if ffmpeg is installed
@@ -58,3 +46,12 @@ def check_ffmpeg():
         return True
     except OSError as e:
         return False
+
+
+def convert_to_wav( audio_file: Path, wav_audio_file: Path, frame_rate: Optional[int] = 16000) -> None:
+    """
+    Converts file to 16khz single channel mono wav
+    """
+    command = f"ffmpeg -y -i {audio_file} -acodec pcm_s16le -ar {frame_rate} -ac 1 {wav_audio_file}"
+
+    subprocess.Popen(command, shell=True).wait()

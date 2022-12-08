@@ -1,7 +1,0 @@
-git+https://github.com/openai/whisper@eff383b#egg=whisper
-librosa==0.8.0
-numpy==1.22.3
-pydub==0.25.1
-scipy==1.8.0
-torch==1.13.0
-torchaudio==0.13.0
