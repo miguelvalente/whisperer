@@ -57,10 +57,19 @@ poetry install
 mkdir data
 mkdir data/audio_files 
 ```
-4. Run the main file
-```
-python main.py
-```
+4. Commands can be called individually or sequentially
+   1. Convert
+      ```
+      python main.py convert
+      ```
+   2. Transcribe *(requires converted to be called first)*
+      ```
+      python main.py transcribe your_dataset_name
+      ```
+   3. Convert & Transcribe
+      ```
+      python main.py convert transcribe your_dataset_name
+      ```
 
 5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
 
