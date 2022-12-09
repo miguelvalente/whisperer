@@ -1,6 +1,9 @@
 from pathlib import Path
 from typing import List
-
+import logging
+logging.basicConfig(format='[%(filename)s:%(lineno)d] %(message)s',
+    datefmt='%Y-%m-%d:%H:%M:%S',
+    level=logging.DEBUG)
 
 class DefaultPaths:
     def __init__(self, main_path):
@@ -59,16 +62,23 @@ class DatasetPaths(DefaultPaths):
 
         self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS]
 
+        self._check_audio_files_wav_presence()
         self._prepare_for_dataset()
 
+
+    def _check_audio_files_wav_presence(self) -> None:
+        if not len(self.get_audio_files_wav()):
+            logging.error(f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
+                           " Please place audio files in 'data/audio_files' and run:\n"
+                          "\tpython main.py convert")
+            exit(1)
+    
     def _touch_metadata(self) -> None:
         self.METADATA.touch(exist_ok=True)
 
     def _prepare_for_dataset(self) -> None:
         if self.DATASET.exists():
-            raise FileExistsError(
-                f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name"
-            )
+            logging.error(f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name")
         else:
             self._make_paths()
             self._touch_metadata()
