@@ -8,6 +8,17 @@ jobs:
   Whisperer_Unit_Testing:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup yt-dlp
+        uses: AnimMouse/setup-yt-dlp@v1
+        with:
+          with-ffmpeg: true
+      - run: mkdir -p data/audio_files
+      - run: yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
+      - run: yt-dlp -x  --downlaoder aria2c --audio-format wav -o data/audio_files/lex_levin1.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
+      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
+      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_kanye1.wav "https://www.youtube.com/watch?v=X-9VnkHJgJs"
+      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
+      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_booby1.wav "https://www.youtube.com/watch?v=FkTizAxPQow"
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
@@ -20,10 +31,6 @@ jobs:
           virtualenvs-in-project: false
           # virtualenvs-path: ~/my-custom-path
           installer-parallel: true
-      - uses: actions/upload-artifact@v3
-        with:
-          name: audio_files 
-          path: ../data/audio_files
       - run: poetry install
       - run: poetry shell
       - run: python main.py convert
