@@ -13,12 +13,12 @@ jobs:
         with:
           with-ffmpeg: true
       - run: mkdir -p data/audio_files
-      - run: yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
-      - run: yt-dlp -x  --downlaoder aria2c --audio-format wav -o data/audio_files/lex_levin1.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
-      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
-      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_kanye1.wav "https://www.youtube.com/watch?v=X-9VnkHJgJs"
-      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
-      - run:  yt-dlp -x --downlaoder aria2c --audio-format wav -o data/audio_files/lex_booby1.wav "https://www.youtube.com/watch?v=FkTizAxPQow"
+      - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
+      - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/audio_files/lex_levin1.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
+      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
+      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_kanye1.wav "https://www.youtube.com/watch?v=X-9VnkHJgJs"
+      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
+      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_booby1.wav "https://www.youtube.com/watch?v=FkTizAxPQow"
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
