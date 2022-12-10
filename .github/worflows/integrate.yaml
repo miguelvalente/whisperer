@@ -1,0 +1,24 @@
+name: Whisperer pipeline check
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  whisperer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.10
+      - uses: Gr1N/setup-poetry@v7
+    - uses: actions/upload-artifact@v3
+      with:
+        name: audio_files 
+        path: data/audio_files
+        with:
+          poetry-version: 1.2.2
+      - run: poetry install
+      - run: python main.py convert
+      - run: python main.py transcribe test
