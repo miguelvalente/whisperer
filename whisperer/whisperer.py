@@ -15,10 +15,10 @@ import config.config as CONF
 
 
 def initialize_whisperer(
-    device: str,
+    device: str, fp16: bool
 ) -> Tuple[whisper.Whisper, whisper.DecodingOptions]:
     print("\tInitializing whisper")
-    options = whisper.DecodingOptions(language="en", without_timestamps=True)
+    options = whisper.DecodingOptions(language="en", without_timestamps=True, fp16=fp16)
     model = whisper.load_model(CONF.whisper_model, device=device)
 
     return model, options
@@ -88,7 +88,11 @@ def find_silent_frame(
     return silences, frame
 
 def transcribe(audio_files: List[Path], wavs_path, transcription_path) -> None:
-    split_audio_files_into_gpus(audio_files, wavs_path, transcription_path)
+    if torch.cuda.is_available():
+        split_audio_files_into_gpus(audio_files, wavs_path, transcription_path)
+    else:
+        whisperer(audio_files, wavs_path, transcription_path, "cpu", False)
+        device = "cpu"
 
 def split_audio_files_into_gpus(audio_files: List[Path], wavs_path: Path, transcriptions_path: Path) -> None:
     number_of_gpus = get_available_gpus()
@@ -100,7 +104,7 @@ def split_audio_files_into_gpus(audio_files: List[Path], wavs_path: Path, transc
         device = f"cuda:{idx}"
         p = Process(
             target=whisperer,
-            args=(group_audio, wavs_path, transcriptions_path, device),
+            args=(group_audio, wavs_path, transcriptions_path, device, True),
         )
         processes.append(p)
         p.start()
@@ -109,9 +113,9 @@ def split_audio_files_into_gpus(audio_files: List[Path], wavs_path: Path, transc
         p.join()
 
 def whisperer(
-    audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path, device: str
+    audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path, device: str, fp16: bool
 ) -> None:
-    model, options = initialize_whisperer(device)
+    model, options = initialize_whisperer(device, fp16)
 
     if audio_files_wav is None:
         print("\tSkipping appended None. Expected behavior")

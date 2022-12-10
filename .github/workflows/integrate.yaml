@@ -27,12 +27,12 @@ jobs:
           installer-parallel: true
       - run: mkdir -p  /home/runner/work/whisperer/whisperer/data/audio_files
       - run: pwd
-      - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
+      # - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
       - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/audio_files/lex_levin1.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
-      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
-      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_kanye1.wav "https://www.youtube.com/watch?v=X-9VnkHJgJs"
-      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
-      - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_booby1.wav "https://www.youtube.com/watch?v=FkTizAxPQow"
+      # - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
+      # - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_kanye1.wav "https://www.youtube.com/watch?v=X-9VnkHJgJs"
+      # - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
+      # - run:  yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_booby1.wav "https://www.youtube.com/watch?v=FkTizAxPQow"
       - run: ls data/audio_files 
       - run: poetry install
       - run: sudo apt-get install libsndfile1-dev
