@@ -32,6 +32,5 @@ jobs:
           # virtualenvs-path: ~/my-custom-path
           installer-parallel: true
       - run: poetry install
-      - run: poetry shell
-      - run: python main.py convert
-      - run: python main.py transcribe test
+      - run: poetry run python main.py convert
+      - run: poetry run python main.py transcribe test
