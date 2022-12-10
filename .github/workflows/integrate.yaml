@@ -23,7 +23,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: audio_files 
-          path: whisperer/data/audio_files
+          path: /data/audio_files
       - run: poetry install
       - run: poetry shell
       - run: python main.py convert
