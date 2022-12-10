@@ -50,6 +50,7 @@ git clone https://github.com/miguelvalente/whisperer.git
 ```
 cd whisperer
 poetry install
+poetry shell
 ```
 
 3. Create data folder and move audio files to it
