@@ -5,20 +5,25 @@ on:
     branches: [ master ]
 
 jobs:
-  whisperer:
+  Whisperer_Unit_Testing:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
           python-version: 3.10
-      - uses: Gr1N/setup-poetry@v7
-    - uses: actions/upload-artifact@v3
-      with:
-        name: audio_files 
-        path: data/audio_files
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
         with:
-          poetry-version: 1.2.2
+          version: 1.2.2
+          virtualenvs-create: true
+          virtualenvs-in-project: false
+          # virtualenvs-path: ~/my-custom-path
+          installer-parallel: true
+      - uses: actions/upload-artifact@v3
+        with:
+          name: audio_files 
+          path: data/audio_files
       - run: poetry install
       - run: python main.py convert
       - run: python main.py transcribe test
