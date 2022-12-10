@@ -32,5 +32,6 @@ jobs:
           # virtualenvs-path: ~/my-custom-path
           installer-parallel: true
       - run: poetry install
+      - run: sudo apt-get install libsndfile1-dev
       - run: poetry run python main.py convert
       - run: poetry run python main.py transcribe test
