@@ -47,10 +47,37 @@ class DefaultPaths:
 
     def get_audio_files_wav(self) -> List[Path]:
         self._assert_wav_files(self.AUDIO_FILES_WAV)
-        return [audio_file for audio_file in self.AUDIO_FILES_WAV.iterdir()]
+        return [audio_file for audio_file in self.AUDIO_FILES_WAV.iterdir() if audio_file.is_file()]
 
     def get_datasets(self) -> List[Path]:
         return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]
+
+class SpeakerPahts(DefaultPaths):
+    def  __init__(self, main_path ):
+        super().__init__(main_path)
+        self.SPEAKERS = self.AUDIO_FILES_WAV.joinpath("speakers")
+
+        self.paths = [self.SPEAKERS]
+        self._check_audio_files_wav_presence()
+
+
+    def _check_audio_files_wav_presence(self) -> None:
+        if not len(self.get_audio_files_wav()):
+            logging.error(f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
+                           " Please place audio files in 'data/audio_files' and run:\n"
+                          "\tpython main.py convert")
+            exit(1)
+    
+    def get_speakers(self) -> List[Path]:
+        return [
+            speaker
+            for speaker in self.SPEAKERS.iterdir()
+            if speaker.is_dir()
+        ]
+
+    def get_speaker_wavs(self, speaker: Path) -> List[Path]:
+        self._assert_wav_files(speaker)
+        return [wav for wav in speaker.iterdir()]
 
 class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):

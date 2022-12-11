@@ -1521,7 +1521,7 @@ toml = ["setuptools (>=42)"]
 
 [[package]]
 name = "simple-diarizer"
-version = "0.0.11"
+version = "0.0.12"
 description = "Simplified diarization pipeline using some pretrained models - audio file to diarized segments in a few lines of code"
 category = "main"
 optional = false
@@ -1908,7 +1908,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "ec8dfae7cc6eb8864b953920cd21adaa423493a62c4f53b52af9783540b9a2a0"
+content-hash = "406770d4d384adb99152405a06de5df43b67d8ed9ea177b15cd7915b711e06e0"
 
 [metadata.files]
 anyio = [
@@ -3183,7 +3183,7 @@ setuptools-scm = [
     {file = "setuptools_scm-7.0.5.tar.gz", hash = "sha256:031e13af771d6f892b941adb6ea04545bbf91ebc5ce68c78aaf3fff6e1fb4844"},
 ]
 simple-diarizer = [
-    {file = "simple_diarizer-0.0.11-py3-none-any.whl", hash = "sha256:28cd67cb093328a4f67cc030048a2d78bcd09e3b19e38bb071379f5e8707765a"},
+    {file = "simple_diarizer-0.0.12-py3-none-any.whl", hash = "sha256:f10fab56c2d126a22c08d493a319eda44dbb9d0ba622f383b17457168b8585bf"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
