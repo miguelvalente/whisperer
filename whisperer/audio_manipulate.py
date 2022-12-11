@@ -52,6 +52,6 @@ def convert_to_wav( audio_file: Path, wav_audio_file: Path, frame_rate: Optional
     """
     Converts file to 16khz single channel mono wav
     """
-    command = f"ffmpeg -y -i {audio_file} -acodec pcm_s16le -ar {frame_rate} -ac 1 {wav_audio_file}"
+    command = f'ffmpeg -y -i "{audio_file}" -acodec pcm_s16le -ar {frame_rate} -ac 1 "{wav_audio_file}"'
 
     subprocess.Popen(command, shell=True).wait()
