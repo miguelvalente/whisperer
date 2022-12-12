@@ -36,7 +36,8 @@ class DefaultPaths:
 
     def _assert_wav_files(self, directory: Path) -> None:
         for audio_file in directory.iterdir():
-            assert audio_file.suffix == ".wav", f"File {audio_file} is not a .wav file"
+            if audio_file.is_file():
+                assert audio_file.suffix == ".wav", f"File {audio_file} is not a .wav file"
 
     def get_audio_files(self) -> List[Path]:
         return [
@@ -52,7 +53,7 @@ class DefaultPaths:
     def get_datasets(self) -> List[Path]:
         return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]
 
-class SpeakerPahts(DefaultPaths):
+class SpeakerPaths(DefaultPaths):
     def  __init__(self, main_path ):
         super().__init__(main_path)
         self.SPEAKERS = self.AUDIO_FILES_WAV.joinpath("speakers")
@@ -60,6 +61,7 @@ class SpeakerPahts(DefaultPaths):
         self.paths = [self.SPEAKERS]
         self._check_audio_files_wav_presence()
 
+        self._make_paths()
 
     def _check_audio_files_wav_presence(self) -> None:
         if not len(self.get_audio_files_wav()):
