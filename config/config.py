@@ -1,5 +1,4 @@
 seed = 42
-dataset_name = "test"
 
 # batch size for OpenAI's Whisper
 whisper_model = "base.en"
