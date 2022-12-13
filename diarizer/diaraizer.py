@@ -1,4 +1,4 @@
-from simple_diarizer.diarizer import Diarizer
+# from simple_diarizer.diarizer import Diarizer
 from sklearn.cluster import AgglomerativeClustering
 import numpy as np
 
@@ -21,18 +21,27 @@ def clusterize_speakers(total_embeds, num_speakers):
 
     return model.labels_
 
-def diarize_audio(diar, wav_file, num_speakers):
-     
-    cleaned_segments, embeds, _, cluster_labels = diar.diarize(
-        wav_file, num_speakers=num_speakers, extra_info=True
-    ).values()
+def diarize_audio(pipeline, wav_file): #, num_speakers):
+        
+    import time
 
-    speaker_embeds = []
-    for speaker_idx in range(num_speakers):
+    start = time.monotonic()
+    diarization = pipeline(str(wav_file))
+    end = time.monotonic()
 
-        speaker_embeds.append(embeds[cluster_labels == speaker_idx].mean(axis=0))
+    eclipsed = end - start
+    print(f"diarization took {eclipsed} seconds")
 
-    return speaker_embeds, cleaned_segments
+
+    # cleaned_segments, embeds, _, cluster_labels = diar.diarize(
+    #     wav_file, num_speakers=num_speakers, extra_info=True
+    # ).values()
+    # speaker_embeds = []
+    # for speaker_idx in range(num_speakers):
+
+    #     speaker_embeds.append(embeds[cluster_labels == speaker_idx].mean(axis=0))
+
+    return diarization
 
 
 # a function that asks for input and valites it as int
@@ -49,28 +58,37 @@ def get_int_input(audio_file):
     
 
 def diarize(audio_files):
-    #lambda to get the first element of a tuple
-    get_embed = lambda x: x[0]
-    get_clean_segmetn = lambda x: x[0]
+    from pyannote.audio import Pipeline
+    pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization",
+                                    use_auth_token="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")
 
-    diar = Diarizer(
-        embed_model="xvec",  # 'xvec' and 'ecapa' supported
-        cluster_method="sc",  # 'ahc' and 'sc' supported
-    )
-
-    audios_diarized = {}
+    
+    result = []
     for audio_file in audio_files:
-        if audio_file.name == 'lex_debate_full.wav':
-            audios_diarized[audio_file.name] = diarize_audio(diar, audio_file, 3)
-        else:
-            audios_diarized[audio_file.name] = diarize_audio(diar, audio_file, 2)
+        result.append(diarize_audio(pipeline, audio_file), get_int_input(audio_file))
+
+    print()
+    #lambda to get the first element of a tuple
+    # get_embed = lambda x: x[0]
+    # get_clean_segmetn = lambda x: x[0]
+
+    # diar = Diarizer(
+    #     embed_model="xvec",  # 'xvec' and 'ecapa' supported
+    #     cluster_method="sc",  # 'ahc' and 'sc' supported
+    # )
+
+    # audios_diarized = {}
+    # for audio_file in audio_files:
+    #     if audio_file.name == 'lex_debate_full.wav':
+    #         audios_diarized[audio_file.name] = diarize_audio(diar, audio_file, 3)
+    #     else:
+    #         audios_diarized[audio_file.name] = diarize_audio(diar, audio_file, 2)
         
+# embeds = list(map(get_embed, audios_diarized.values()))
+#     embeds = list(map(get_embed, audios_diarized.values()))
+#     total_embeds = np.concatenate(embeds, axis=0)
 
-    embeds = list(map(get_embed, audios_diarized.values()))
-    embeds = list(map(get_embed, audios_diarized.values()))
-    total_embeds = np.concatenate(embeds, axis=0)
-
-    cluster_labels = clusterize_speakers(total_embeds, 5)
+#     cluster_labels = clusterize_speakers(total_embeds, 5)
 
 
 
