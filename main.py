@@ -26,8 +26,8 @@ def convert():
 def diarize():
     speaker_paths = SpeakerPaths(__file__)
     
-    print(f"## Running diarizer on all files in {speaker_paths.AUDIO_FILES_WAV}")
-    _diarize(speaker_paths.get_audio_files_wav())
+    print(f"## Diarizer on all files in {speaker_paths.AUDIO_FILES_WAV}")
+    _diarize(speaker_paths.get_audio_files_wav(), speaker_paths.SPEAKERS)
     print(f"\t--- Done diarizing\n")
 
     
