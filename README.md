@@ -10,15 +10,12 @@ This repo takes a directory of audio files and converts them to a text-audio dat
 The output is a text-audio dataset that can be used for training a speech-to-text model or text-to-speech. Currently the code only supports single speaker audio files.
 
 The dataset structure is as follows:
-
 ```
-/dataset
-      |
-      | -> metadata.txt
-      | -> /wavs
-              | -> audio1.wav
-              | -> audio2.wav
-              | ...
+│── /dataset
+│   ├── metadata.txt
+│   └── wavs
+│      ├── audio1.wav
+│      └── audio2.wav
 ```
 
 metadata.txt 
