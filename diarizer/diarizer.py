@@ -8,26 +8,6 @@ from typing import List, Tuple
 from pathlib import Path
 
 
-def get_int_input(audio_file):
-    prompt = f"Please enter the number of speakers in: {audio_file.name}"
-    while True:
-        try:
-            user_input = int(input(prompt))
-        except ValueError:
-            print("Please enter a valid integer")
-            continue
-        else:
-            return user_input
-
-
-
-def clusterize_speakers(total_embeds, num_speakers):
-    model = AgglomerativeClustering(n_clusters=num_speakers, linkage="ward").fit(
-        total_embeds
-    )
-
-    return model.labels_
-
 
 def diarize_audio(pipeline, wav_file, num_speakers=None):
     diarization = pipeline(str(wav_file))
@@ -45,22 +25,6 @@ def diarize_audio(pipeline, wav_file, num_speakers=None):
                 concated_speakers.append([turn.start, turn.end, speaker])
 
     return concated_speakers
-
-
-def get_embeds(model_embeder, audio_path, concated_speaker):
-    embeds = defaultdict(list)
-    audio, _ = torchaudio.load(audio_path)
-    with torch.no_grad():
-        for start, end, speaker in concated_speaker:
-            start_ = int(start * 16000)
-            end_ = int(end * 16000)
-            if (end_ - start_) / 16000 < 0.35:
-                continue
-
-            results = model_embeder(audio[:, start_:end_]).detach().numpy()
-            embeds[f"{audio_path.name}_{speaker}"].append(results)
-
-    return embeds
 
 
 def export_joined_speaker_segment(
@@ -97,7 +61,6 @@ def export_speaker_segments(
 
         speaker_path = speakers_path.joinpath(f"{audio_path.stem}_{speaker}_{idx}.wav")
         torchaudio.save(speaker_path, audio_segment, sampling_rate)
-
 
 
 def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:

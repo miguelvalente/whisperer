@@ -43,7 +43,7 @@ def label_embeddings(sim_matrix: np.array, num_speakers: int) -> List[str]:
     return clusterer.labels_
 
 
-def auto_label(num_speakers: int, audio_files: List[Path]) -> None:
+def auto_label(num_speakers: int, audio_files: List[Path], speakers_metadata: Path) -> None:
     embedder = EncoderClassifier.from_hparams(
         source="speechbrain/spkrec-ecapa-voxceleb",
         savedir="pretrained_models/spkrec-ecapa-voxceleb",
@@ -58,4 +58,8 @@ def auto_label(num_speakers: int, audio_files: List[Path]) -> None:
 
     labels = label_embeddings(sim_matrix, num_speakers)
 
-    print()
+    text = ""
+    for label, audio_path in zip(labels, audio_files):
+        text = text + f"{audio_path.name}|{label}\n"
+
+    speakers_metadata.write_text(text)   

@@ -80,7 +80,8 @@ def auto_label(num_speakers):
     print(f"## Auto labeling on all files in {speaker_paths.SPEAKERS}")
     _auto_label(
         num_speakers,
-        speaker_paths.get_speakers_wavs())
+        speaker_paths.get_speakers_wavs(),
+        speaker_paths.SPEAKERS_METADATA)
     print(f"\t--- Done auto labeling\n")
 
 @cli.command()
