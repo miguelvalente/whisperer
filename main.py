@@ -37,9 +37,8 @@ def convert():
 
 
 @cli.command()
-@click.argument("num_speakers", type=int, required=True)
 @click.option("--join", is_flag=True, default=True)
-def diarize(num_speakers, join):
+def diarize(join):
     """
     Diarize all audio files in data/audio_files_wav.
     Diarized audio files will be saved in data/speakers.
@@ -57,7 +56,6 @@ def diarize(num_speakers, join):
 
     print(f"## Diarizer on all files in {speaker_paths.AUDIO_FILES_WAV}")
     _diarize(
-        num_speakers,
         speaker_paths.get_audio_files_wav(),
         speaker_paths.SPEAKERS,
         join_speaker=join,

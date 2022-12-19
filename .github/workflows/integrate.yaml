@@ -36,6 +36,6 @@ jobs:
       - run: poetry install
       - run: sudo apt-get install libsndfile1-dev
       - run: poetry run python main.py convert
-      - run: poetry run python main.py diarize 5
+      - run: poetry run python main.py diarize
       - run: poetry run python main.py auto-label 5
       - run: poetry run python main.py transcribe test
