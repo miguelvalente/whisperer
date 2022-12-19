@@ -1,9 +1,13 @@
 from pathlib import Path
 from typing import List
 import logging
-logging.basicConfig(format='[%(filename)s:%(lineno)d] %(message)s',
-    datefmt='%Y-%m-%d:%H:%M:%S',
-    level=logging.DEBUG)
+
+# logging.basicConfig(
+#     format="[%(filename)s:%(lineno)d] %(message)s",
+#     datefmt="%Y-%m-%d:%H:%M:%S",
+#     level=logging.DEBUG,
+# )
+
 
 class DefaultPaths:
     def __init__(self, main_path):
@@ -37,7 +41,9 @@ class DefaultPaths:
     def _assert_wav_files(self, directory: Path) -> None:
         for audio_file in directory.iterdir():
             if audio_file.is_file():
-                assert audio_file.suffix == ".wav", f"File {audio_file} is not a .wav file"
+                assert (
+                    audio_file.suffix == ".wav"
+                ), f"File {audio_file} is not a .wav file"
 
     def get_audio_files(self) -> List[Path]:
         return [
@@ -48,13 +54,18 @@ class DefaultPaths:
 
     def get_audio_files_wav(self) -> List[Path]:
         self._assert_wav_files(self.AUDIO_FILES_WAV)
-        return [audio_file for audio_file in self.AUDIO_FILES_WAV.iterdir() if audio_file.is_file()]
+        return [
+            audio_file
+            for audio_file in self.AUDIO_FILES_WAV.iterdir()
+            if audio_file.is_file()
+        ]
 
     def get_datasets(self) -> List[Path]:
         return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]
 
+
 class SpeakerPaths(DefaultPaths):
-    def  __init__(self, main_path ):
+    def __init__(self, main_path):
         super().__init__(main_path)
         self.SPEAKERS = self.AUDIO_FILES_WAV.joinpath("speakers")
 
@@ -65,21 +76,16 @@ class SpeakerPaths(DefaultPaths):
 
     def _check_audio_files_wav_presence(self) -> None:
         if not len(self.get_audio_files_wav()):
-            logging.error(f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
-                           " Please place audio files in 'data/audio_files' and run:\n"
-                          "\tpython main.py convert")
+            logging.error(
+                f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
+                " Please place audio files in 'data/audio_files' and run:\n"
+                "\tpython main.py convert"
+            )
             exit(1)
-    
-    def get_speakers(self) -> List[Path]:
-        return [
-            speaker
-            for speaker in self.SPEAKERS.iterdir()
-            if speaker.is_dir()
-        ]
 
-    def get_speaker_wavs(self, speaker: Path) -> List[Path]:
-        self._assert_wav_files(speaker)
-        return [wav for wav in speaker.iterdir()]
+    def get_speakers_wavs(self) -> List[Path]:
+        return [wav for wav in self.SPEAKERS.iterdir() if wav.is_file()]
+
 
 class DatasetPaths(DefaultPaths):
     def __init__(self, main_path, dataset_name):
@@ -94,20 +100,23 @@ class DatasetPaths(DefaultPaths):
         self._check_audio_files_wav_presence()
         self._prepare_for_dataset()
 
-
     def _check_audio_files_wav_presence(self) -> None:
         if not len(self.get_audio_files_wav()):
-            logging.error(f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
-                           " Please place audio files in 'data/audio_files' and run:\n"
-                          "\tpython main.py convert")
+            logging.error(
+                f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
+                " Please place audio files in 'data/audio_files' and run:\n"
+                "\tpython main.py convert"
+            )
             exit(1)
-    
+
     def _touch_metadata(self) -> None:
         self.METADATA.touch(exist_ok=True)
 
     def _prepare_for_dataset(self) -> None:
         if self.DATASET.exists():
-            logging.error(f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name")
+            logging.error(
+                f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name"
+            )
         else:
             self._make_paths()
             self._touch_metadata()
@@ -131,4 +140,3 @@ class DatasetPaths(DefaultPaths):
         with open(self.METADATA, "a") as f:
             for transcription in transcriptions:
                 f.write(transcription)
-

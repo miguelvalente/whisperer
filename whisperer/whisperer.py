@@ -88,14 +88,18 @@ def find_silent_frame(
 
     return silences, frame
 
+
 def transcribe(audio_files: List[Path], wavs_path, transcription_path) -> None:
     try:
-        subprocess.check_output('nvidia-smi')
+        subprocess.check_output("nvidia-smi")
         split_audio_files_into_gpus(audio_files, wavs_path, transcription_path)
-    except Exception: # this command not being found can raise quite a few different errors depending on the configuration
+    except Exception:  # this command not being found can raise quite a few different errors depending on the configuration
         whisperer(audio_files, wavs_path, transcription_path, "cpu", False)
 
-def split_audio_files_into_gpus(audio_files: List[Path], wavs_path: Path, transcriptions_path: Path) -> None:
+
+def split_audio_files_into_gpus(
+    audio_files: List[Path], wavs_path: Path, transcriptions_path: Path
+) -> None:
     number_of_gpus = get_available_gpus()
     print(f"## Detected {number_of_gpus} GPU")
 
@@ -113,8 +117,13 @@ def split_audio_files_into_gpus(audio_files: List[Path], wavs_path: Path, transc
     for p in processes:
         p.join()
 
+
 def whisperer(
-    audio_files_wav: List[Path], wavs_path: Path, transcription_path: Path, device: str, fp16: bool
+    audio_files_wav: List[Path],
+    wavs_path: Path,
+    transcription_path: Path,
+    device: str,
+    fp16: bool,
 ) -> None:
     model, options = initialize_whisperer(device, fp16)
 

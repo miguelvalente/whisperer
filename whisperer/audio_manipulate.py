@@ -13,7 +13,9 @@ def convert(paths: DefaultPaths) -> None:
 
         if export_path.exists():
             if check_wav_16khz_mono(export_path):
-                print(f"\tAudio File already in correct .wav format: {export_path.name} ")
+                print(
+                    f"\tAudio File already in correct .wav format: {export_path.name} "
+                )
             else:
                 convert_to_wav(audio_file, export_path, frame_rate=16000)
         else:
@@ -48,7 +50,9 @@ def check_ffmpeg():
         return False
 
 
-def convert_to_wav( audio_file: Path, wav_audio_file: Path, frame_rate: Optional[int] = 16000) -> None:
+def convert_to_wav(
+    audio_file: Path, wav_audio_file: Path, frame_rate: Optional[int] = 16000
+) -> None:
     """
     Converts file to 16khz single channel mono wav
     """
