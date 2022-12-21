@@ -43,7 +43,7 @@ def diarize(join):
     Diarize all audio files in data/audio_files_wav.
     Diarized audio files will be saved in data/speakers.
 
-
+    \b
     ARGUMENTS
         num_speakers: Number of speakers in data/audio_files_wav.
 
@@ -54,7 +54,7 @@ def diarize(join):
 
     speaker_paths = SpeakerPaths(__file__)
 
-    print(f"## Diarizer on all files in {speaker_paths.AUDIO_FILES_WAV}")
+    print(f"## Diarizing all files in {speaker_paths.AUDIO_FILES_WAV}")
     _diarize(
         speaker_paths.get_audio_files_wav(),
         speaker_paths.SPEAKERS,
@@ -68,6 +68,7 @@ def auto_label(num_speakers):
     """
     Auto label all audio files in data/audio_files_wav/speakers
 
+    \b
     ARGUMENTS
         num_speakers: Number of speakers to label
 
@@ -89,6 +90,7 @@ def transcribe(dataset_name):
     Transcribe all audio files. data/speakers must
     has priority over data/audio_files_wav.
     
+    \b
     OPTION
         dataset_name: Name of the dataset.
     """   

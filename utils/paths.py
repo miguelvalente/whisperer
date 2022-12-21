@@ -68,11 +68,16 @@ class SpeakerPaths(DefaultPaths):
     def __init__(self, main_path):
         super().__init__(main_path)
         self.SPEAKERS = self.AUDIO_FILES_WAV.joinpath("speakers")
+        self.SPEAKERS_METADATA = self.SPEAKERS.joinpath("spekers_metadata.txt")
 
         self.paths = [self.SPEAKERS]
         self._check_audio_files_wav_presence()
 
         self._make_paths()
+        self._touch_speakers_metadata()
+
+    def _touch_speakers_metadata(self) -> None:
+        self.SPEAKERS_METADATA.touch(exist_ok=True)
 
     def _check_audio_files_wav_presence(self) -> None:
         if not len(self.get_audio_files_wav()):
@@ -84,7 +89,7 @@ class SpeakerPaths(DefaultPaths):
             exit(1)
 
     def get_speakers_wavs(self) -> List[Path]:
-        return [wav for wav in self.SPEAKERS.iterdir() if wav.is_file()]
+        return [wav for wav in self.SPEAKERS.iterdir() if wav.is_file() and wav.suffix == ".wav"]
 
 
 class DatasetPaths(DefaultPaths):
