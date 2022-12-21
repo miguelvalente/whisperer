@@ -21,11 +21,10 @@ def embed(audio_path: Path, embedder: EncoderClassifier):
     '''
     Embed the audio file using the pretrained model
     '''
-    audio, sr = torchaudio.load(audio_path)
-    # with torch.no_grad():
-    #     embedding = embedder.encode_batch(audio)
-    #     embedding = embedding.flatten().cpu().numpy()
-    embedding = np.random.rand(192)
+    audio, _ = torchaudio.load(audio_path)
+    with torch.no_grad():
+        embedding = embedder.encode_batch(audio)
+        embedding = embedding.flatten().cpu().numpy()
 
     return embedding
 

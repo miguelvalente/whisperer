@@ -74,10 +74,6 @@ class SpeakerPaths(DefaultPaths):
         self._check_audio_files_wav_presence()
 
         self._make_paths()
-        self._touch_speakers_metadata()
-
-    def _touch_speakers_metadata(self) -> None:
-        self.SPEAKERS_METADATA.touch(exist_ok=True)
 
     def _check_audio_files_wav_presence(self) -> None:
         if not len(self.get_audio_files_wav()):

@@ -76,7 +76,7 @@ def auto_label(num_speakers):
 
     speaker_paths = SpeakerPaths(__file__)
 
-    print(f"## Auto labeling on all files in {speaker_paths.SPEAKERS}")
+    print(f"## Auto labeling all wav files in {speaker_paths.SPEAKERS}")
     _auto_label(
         num_speakers,
         speaker_paths.get_speakers_wavs(),
