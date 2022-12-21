@@ -29,8 +29,8 @@ peters_1.wav|Explicit is better than implicit.
 
 ## Key Features
 
-* Audio files are automatically split on speakers
-* Speakers are embedded and cross-checked across the files 
+* Audio files are automatically split by speakers
+* Speakers are auto-labeled across the files 
 * Audio splits on silences
 * Audio splitting is configurable
 * The dataset creation is done so that it follows Gaussian-like distributions on clip length. Which, in turn, can lead to Gaussian-like distributions on the rest of the dataset statistics. Of course, this is highly dependent on your audio sources.
