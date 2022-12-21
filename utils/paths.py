@@ -84,19 +84,22 @@ class SpeakerPaths(DefaultPaths):
             )
             exit(1)
 
+    def number_of_speakers(self) -> int:
+        return len(self.get_speakers_wavs())
+    
     def get_speakers_wavs(self) -> List[Path]:
         return [wav for wav in self.SPEAKERS.iterdir() if wav.is_file() and wav.suffix == ".wav"]
 
 
-class DatasetPaths(DefaultPaths):
+class DatasetPaths(SpeakerPaths):
     def __init__(self, main_path, dataset_name):
         super().__init__(main_path)
         self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
         self.TRANSCRIPTIONS = self.DATASET.joinpath("transcriptions")
-        self.WAVS = self.DATASET.joinpath("wavs")
+        self.WAVS_DIR = self.DATASET.joinpath("wavs")
         self.METADATA = self.DATASET.joinpath("metadata.txt")
 
-        self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS]
+        self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS_DIR]
 
         self._check_audio_files_wav_presence()
         self._prepare_for_dataset()

@@ -99,9 +99,17 @@ def transcribe(dataset_name):
     dataset_paths = DatasetPaths(__file__, dataset_name)
 
     print(f"## Running whisper on all files in {dataset_paths.AUDIO_FILES_WAV}")
+    
+    # Check if speakers audio exists
+    # Since speakers audio has priority over audio_files_wav
+    if dataset_paths.number_of_speakers() > 0:
+        audio_files = dataset_paths.get_speakers_wavs()
+    else:
+        audio_files = dataset_paths.get_audio_files_wav()
+
     _transcribe(
-        dataset_paths.get_audio_files_wav(),
-        dataset_paths.WAVS,
+        audio_files,
+        dataset_paths.WAVS_DIR,
         dataset_paths.TRANSCRIPTIONS,
     )
 
