@@ -68,7 +68,7 @@ mkdir data/audio_files
       ```
    3. Auto-Label *(requires diarize to be called first)*
       ```
-      python -m auto-label your_number__of_speakers
+      python -m auto-label number_of_speakers_present_in_your_audio_file_
       ```    
    4. Transcribe *(requires converted to be called first)*
       ```
