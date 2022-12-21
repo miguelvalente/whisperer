@@ -1,7 +1,7 @@
 
 # whisperer
 
-Go from raw audio files to a text-audio dataset automatically with OpenAI's Whisper.
+Go from raw audio files to a speaker separated text-audio datases automatically.
 
 ## Summary
 
@@ -13,7 +13,7 @@ The dataset structure is as follows:
 ```
 │── /dataset
 │   ├── metadata.txt
-│   └── wavs
+│   └── wavs/
 │      ├── audio1.wav
 │      └── audio2.wav
 ```
@@ -29,6 +29,8 @@ peters_1.wav|Explicit is better than implicit.
 
 ## Key Features
 
+* Audio files are automatically split on speakers
+* Speakers are embedded and cross-checked across the files 
 * Audio splits on silences
 * Audio splitting is configurable
 * The dataset creation is done so that it follows Gaussian-like distributions on clip length. Which, in turn, can lead to Gaussian-like distributions on the rest of the dataset statistics. Of course, this is highly dependent on your audio sources.
@@ -58,18 +60,27 @@ mkdir data/audio_files
 4. Commands can be called individually or sequentially
    1. Convert
       ```
-      python main.py convert
+      python -m main convert
       ```
-   2. Transcribe *(requires converted to be called first)*
+   2. Diarize *(requires converted to be called first)*
       ```
-      python main.py transcribe your_dataset_name
+      python -m diarize
       ```
-   3. Convert & Transcribe
+   3. Auto-Label *(requires diarize to be called first)*
       ```
-      python main.py convert transcribe your_dataset_name
+      python -m auto-label your_number__of_speakers
+      ```    
+   4. Transcribe *(requires converted to be called first)*
+      ```
+      python -m transcribe your_dataset_name
+      ```
+   5. Convert & Diarize & Auto-Label & Transcribe
+      ```
+      python main.py convert diarize auto-label 6 transcribe your_dataset_name
       ```
 
 5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
+6. Use the ```AnalyseSilence.ipynb``` notebook to experiment with silence detection configuration
 
 ### Using Multiple-GPUS
 
@@ -84,10 +95,12 @@ Modify `config.py` file to change the parameters of the dataset creation.
 
 ## To Do
 
-- [ ] Speech Diarization
+- [x] Speech Diarization
 
 
 ## Acknowledgements
 
  - [AnalyseDataset.ipynb adapted from coqui-ai example](https://github.com/coqui-ai)
  - [OpenAI Whisper](https://github.com/openai/whisper)
+ - [PyAnnote](https://github.com/pyannote/pyannote-audio)
+ - [SpeechBrain[(https://github.com/speechbrain/speechbrain)
