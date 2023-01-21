@@ -42,7 +42,7 @@ def export_joined_speaker_segment(
         end = int(end_ * sampling_rate)
 
         speakers[speaker].append(audio[:, start:end])
-        speakers[speaker].append(torch.zeros((1, 16000)))
+        speakers[speaker].append(torch.zeros((1, 22050)))
 
     for speaker, speakers_audio in speakers.items():
         speaker_path = speakers_path.joinpath(f"{audio_path.stem}_{speaker}.wav")

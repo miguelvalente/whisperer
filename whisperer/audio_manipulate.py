@@ -5,24 +5,24 @@ import torchaudio
 import subprocess
 
 
-def convert(paths: DefaultPaths) -> None:
+def convert(paths: DefaultPaths, sample_rate: Optional[int] = 22050) -> None:
     audio_files = paths.get_audio_files()
 
     for audio_file in audio_files:
         export_path = paths.AUDIO_FILES_WAV.joinpath(audio_file.stem + ".wav")
 
         if export_path.exists():
-            if check_wav_16khz_mono(export_path):
+            if check_wav_khz_mono(export_path):
                 print(
                     f"\tAudio File already in correct .wav format: {export_path.name} "
                 )
             else:
-                convert_to_wav(audio_file, export_path, frame_rate=16000)
+                convert_to_wav(audio_file, export_path, sample_rate=sample_rate)
         else:
-            convert_to_wav(audio_file, export_path, frame_rate=16000)
+            convert_to_wav(audio_file, export_path, sample_rate=sample_rate)
 
 
-def check_wav_16khz_mono(audio_file: Path) -> bool:
+def check_wav_khz_mono(audio_file: Path, sample_rate: int) -> bool:
     """
     Returns True if a wav file is 16khz and single channel
     """
@@ -30,7 +30,7 @@ def check_wav_16khz_mono(audio_file: Path) -> bool:
         signal, fs = torchaudio.load(audio_file)
 
         mono = signal.shape[0] == 1
-        freq = fs == 16000
+        freq = fs == sample_rate
         if mono and freq:
             return True
         else:
@@ -51,11 +51,11 @@ def check_ffmpeg():
 
 
 def convert_to_wav(
-    audio_file: Path, wav_audio_file: Path, frame_rate: Optional[int] = 16000
+    audio_file: Path, wav_audio_file: Path, sample_rate: Optional[int] = 22050
 ) -> None:
     """
-    Converts file to 16khz single channel mono wav
+    Converts file to 22khz single channel mono wav with ffpemg
     """
-    command = f'ffmpeg -y -i "{audio_file}" -acodec pcm_s16le -ar {frame_rate} -ac 1 "{wav_audio_file}"'
+    command = 
 
     subprocess.Popen(command, shell=True).wait()
