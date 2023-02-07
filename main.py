@@ -7,8 +7,6 @@ from whisperer.whisperer import transcribe as _transcribe
 import config.config as CONF
 import click
 
-from typing import Optional
-
 
 seed_all(CONF.seed)
 
@@ -22,8 +20,7 @@ def cli():
 
 
 @cli.command()
-@click.argument("sample_rate", type=int, required=False)
-def convert(sample_rate: Optional[int] = 22050):
+def convert():
     """
     Convert all audio files in data/audio_files to .wav.
 
@@ -33,9 +30,9 @@ def convert(sample_rate: Optional[int] = 22050):
     default_paths = DefaultPaths(__file__)
 
     print(
-        f"## Converting files in {default_paths.AUDIO_FILES} to .wav with sample_rate={sample_rate}"
+        f"## Converting files in {default_paths.AUDIO_FILES} to .wav with frame_rate=16000"
     )
-    _convert(default_paths, sample_rate)
+    _convert(default_paths)
     print("\t--- Done converting to .wav\n")
 
 

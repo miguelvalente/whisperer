@@ -75,7 +75,7 @@ def find_silent_frame(
             return None, 1
 
         # lower = frame
-        upper = frame + (22050 * counter)
+        upper = frame + (16000 * counter)
         voices = effects.split(
             y=audio[:upper],
             frame_length=CONF.frame_lenght,
