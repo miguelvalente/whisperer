@@ -17,7 +17,7 @@ The dataset structure is as follows:
 │      └── audio2.wav
 ```
 
-metadata.txt 
+metadata.txt
 ```
 peters_0.wav|Beautiful is better than ugly.
 peters_1.wav|Explicit is better than implicit.
@@ -29,7 +29,7 @@ peters_1.wav|Explicit is better than implicit.
 ## Key Features
 
 * Audio files are automatically split by speakers
-* Speakers are auto-labeled across the files 
+* Speakers are auto-labeled across the files
 * Audio splits on silences
 * Audio splitting is configurable
 * The dataset creation is done so that it follows Gaussian-like distributions on clip length. Which, in turn, can lead to Gaussian-like distributions on the rest of the dataset statistics. Of course, this is highly dependent on your audio sources.
@@ -40,7 +40,7 @@ peters_1.wav|Explicit is better than implicit.
 ## How to use:
 
 1. Clone the repo
-``` 
+```
 git clone https://github.com/miguelvalente/whisperer.git
 ```
 2. Install the dependencies
@@ -54,7 +54,7 @@ poetry shell
 3. Create data folder and move audio files to it
 ```
 mkdir data
-mkdir data/audio_files 
+mkdir data/audio_files
 ```
 4. Commands can be called individually or sequentially
    1. Convert
@@ -68,7 +68,7 @@ mkdir data/audio_files
    3. Auto-Label *(requires diarize to be called first)*
       ```
       python -m main auto-label number_of_speakers_present_in_your_audio_file_
-      ```    
+      ```
    4. Transcribe *(requires converted to be called first)*
       ```
       python -m main transcribe your_dataset_name
@@ -84,9 +84,9 @@ mkdir data/audio_files
 ### Using Multiple-GPUS
 
 The code automatically detects how many GPU's are available and distributes the audio files in ```data/audio_files_wav``` evenly across the GPUs.
-The automatic detection is done through ```nvidia-smi```. 
+The automatic detection is done through ```nvidia-smi```.
 
-You can to make the available GPU's explicit by setting the environment variable ```CUDA_AVAILABLE_DEVICES```.  
+You can to make the available GPU's explicit by setting the environment variable ```CUDA_AVAILABLE_DEVICES```.
 
 ### Configuration
 
@@ -98,6 +98,7 @@ Modify `config.py` file to change the parameters of the dataset creation.
 
 
 ## Acknowledgements
+
 
  - [AnalyseDataset.ipynb adapted from coqui-ai example](https://github.com/coqui-ai)
  - [OpenAI Whisper](https://github.com/openai/whisper)
