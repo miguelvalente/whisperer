@@ -7,7 +7,8 @@ Go from raw audio files to a speaker separated text-audio datases automatically.
 
 This repo takes a directory of audio files and converts them to a text-audio dataset with normalized distribution of audio lengths. *See ```AnalyzeDataset.ipynb``` for examples of the dataset distributions across audio and text length*
 
-The output is a text-audio dataset that can be used for training a speech-to-text model or text-to-speech.
+The output is a text-audio dataset that can be used for training a speech-to-text model or text-to-speech. Currently the code only supports single speaker audio files.
+
 The dataset structure is as follows:
 ```
 │── /dataset
