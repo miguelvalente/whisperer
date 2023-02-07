@@ -63,19 +63,19 @@ mkdir data/audio_files
       ```
    2. Diarize *(requires converted to be called first)*
       ```
-      python -m diarize
+      python -m main diarize
       ```
    3. Auto-Label *(requires diarize to be called first)*
       ```
-      python -m auto-label number_of_speakers_present_in_your_audio_file_
+      python -m main auto-label number_of_speakers_present_in_your_audio_file_
       ```    
    4. Transcribe *(requires converted to be called first)*
       ```
-      python -m transcribe your_dataset_name
+      python -m main transcribe your_dataset_name
       ```
    5. Convert & Diarize & Auto-Label & Transcribe
       ```
-      python main.py convert diarize auto-label 6 transcribe your_dataset_name
+      python -m main convert diarize auto-label 6 transcribe your_dataset_name
       ```
 
 5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
