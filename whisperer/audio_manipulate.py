@@ -1,5 +1,5 @@
 from pathlib import Path
-from utils.paths import DefaultPaths
+from paths.default import DefaultPaths
 from typing import Optional, List
 import torchaudio
 import subprocess

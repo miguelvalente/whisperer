@@ -1,9 +1,10 @@
 from utils.utils import seed_all
-from utils.paths import DefaultPaths, SpeakerPaths, DatasetPaths
+from paths.default import DefaultPaths, SpeakerPaths, DatasetPaths
 from diarizer.diarizer import diarize as _diarize
 from diarizer.embedder import auto_label as _auto_label
 from whisperer.audio_manipulate import convert as _convert
 from whisperer.whisperer import transcribe as _transcribe
+from pathlib import Path
 import config.config as CONF
 import typer
 
@@ -14,7 +15,7 @@ app = typer.Typer()
 
 
 @app.command()
-def convert():
+def convert(data_directory: Path):
     """
     Convert all audio files in data/audio_files to .wav.
 
@@ -43,7 +44,7 @@ def diarize(join):
     OPTION
         --join: Join speakers with the same name.
                 default: True
-    """   
+    """
 
     speaker_paths = SpeakerPaths(__file__)
 
@@ -65,15 +66,14 @@ def auto_label(num_speakers):
     ARGUMENTS
         num_speakers: Number of speakers to label
 
-    """   
+    """
 
     speaker_paths = SpeakerPaths(__file__)
 
     print(f"## Auto labeling all wav files in {speaker_paths.SPEAKERS}")
     _auto_label(
-        num_speakers,
-        speaker_paths.get_speakers_wavs(),
-        speaker_paths.SPEAKERS_METADATA)
+        num_speakers, speaker_paths.get_speakers_wavs(), speaker_paths.SPEAKERS_METADATA
+    )
     print("\t--- Done auto labeling\n")
 
 
@@ -86,7 +86,7 @@ def transcribe(dataset_name):
     \b
     OPTION
         dataset_name: Name of the dataset.
-    """   
+    """
 
     dataset_name = f"{dataset_name}_{CONF.seed}"
     dataset_paths = DatasetPaths(__file__, dataset_name)
@@ -111,12 +111,27 @@ def transcribe(dataset_name):
     print(f"## Done creating dataset {dataset_name} ##")
 
 
-@app.callback()
-def main(context: typer.Context):
+@app.callback(invoke_without_command=True)
+def main(
+    context: typer.Context,
+    data_directory: Path = typer.Option(
+        ..., prompt=True, help="Path to the data directory"
+    ),
+):
     """
     Main function of Whisperer.
     Deals with the order of execution of the functions.
     """
+    match context.invoked_subcommand:
+        case "convert":
+            pass
+        case "diarize", "transcribe":
+            convert(data_directory)
+        case "auto_label":
+            diarize(join=True)
+        case other:
+            typer.echo("Please specify a subcommand")
+
 
 if __name__ == "__main__":
     app()

@@ -1,5 +1,5 @@
 import numpy as np
-from pathlib import Path 
+from pathlib import Path
 from sklearn.cluster import AgglomerativeClustering
 from typing import List
 import torch
@@ -7,8 +7,10 @@ import torchaudio
 from sklearn.metrics import pairwise_distances
 from speechbrain.pretrained import EncoderClassifier
 
+
 def similarity_matrix(embeds, metric="cosine"):
     return pairwise_distances(embeds, metric=metric)
+
 
 def read_speaker_config(speaker_config):
     speakers = []
@@ -17,10 +19,11 @@ def read_speaker_config(speaker_config):
             speakers.append(line.strip())
     return speakers
 
+
 def embed(audio_path: Path, embedder: EncoderClassifier):
-    '''
+    """
     Embed the audio file using the pretrained model
-    '''
+    """
     audio, _ = torchaudio.load(audio_path)
     with torch.no_grad():
         embedding = embedder.encode_batch(audio)
@@ -28,21 +31,22 @@ def embed(audio_path: Path, embedder: EncoderClassifier):
 
     return embedding
 
+
 def label_embeddings(sim_matrix: np.array, num_speakers: int) -> List[str]:
-    '''
+    """
     Label the embeddings using Agglomerative Clustering
-    '''
+    """
 
     clusterer = AgglomerativeClustering(
-        n_clusters=num_speakers,
-        affinity="precomputed",
-        linkage="average"
-        ).fit(sim_matrix)
+        n_clusters=num_speakers, affinity="precomputed", linkage="average"
+    ).fit(sim_matrix)
 
     return clusterer.labels_
 
 
-def auto_label(num_speakers: int, audio_files: List[Path], speakers_metadata: Path) -> None:
+def auto_label(
+    num_speakers: int, audio_files: List[Path], speakers_metadata: Path
+) -> None:
     embedder = EncoderClassifier.from_hparams(
         source="speechbrain/spkrec-ecapa-voxceleb",
         savedir="pretrained_models/spkrec-ecapa-voxceleb",
@@ -61,4 +65,4 @@ def auto_label(num_speakers: int, audio_files: List[Path], speakers_metadata: Pa
     for label, audio_path in zip(labels, audio_files):
         text = text + f"{audio_path.name}|{label}\n"
 
-    speakers_metadata.write_text(text)   
+    speakers_metadata.write_text(text)

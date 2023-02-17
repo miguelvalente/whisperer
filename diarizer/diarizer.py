@@ -8,7 +8,6 @@ from typing import List, Tuple
 from pathlib import Path
 
 
-
 def diarize_audio(pipeline, wav_file, num_speakers=None):
     diarization = pipeline(str(wav_file))
 
@@ -30,10 +29,10 @@ def diarize_audio(pipeline, wav_file, num_speakers=None):
 def export_joined_speaker_segment(
     speakers_path: Path, audio_path: Path, speakers_segments: List[Tuple[int, int, str]]
 ) -> defaultdict:
-    '''
+    """
     Join the diariazed segments of each speaker and
     export the joined audio segment of each speaker in a wav file
-    '''
+    """
     audio, sampling_rate = torchaudio.load(audio_path)
 
     speakers = defaultdict(list)
@@ -52,9 +51,9 @@ def export_joined_speaker_segment(
 def export_speaker_segments(
     speakers_path: Path, audio_path: Path, speakers_segments: List[Tuple[int, int, str]]
 ):
-    '''
+    """
     Export the diariazed segments of each speaker in a wav file
-    '''
+    """
     audio, sampling_rate = torchaudio.load(audio_path)
 
     for idx, (start_, end_, speaker) in enumerate(speakers_segments):

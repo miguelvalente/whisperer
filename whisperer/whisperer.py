@@ -93,7 +93,9 @@ def transcribe(audio_files: List[Path], wavs_path, transcription_path) -> None:
     try:
         subprocess.check_output("nvidia-smi")
         split_audio_files_into_gpus(audio_files, wavs_path, transcription_path)
-    except Exception:  # this command not being found can raise quite a few different errors depending on the configuration
+    except (
+        Exception
+    ):  # this command not being found can raise quite a few different errors depending on the configuration
         whisperer(audio_files, wavs_path, transcription_path, "cpu", False)
 
 
