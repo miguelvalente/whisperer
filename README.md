@@ -53,8 +53,7 @@ poetry shell
 
 3. Create data folder and move audio files to it
 ```
-mkdir data
-mkdir data/audio_files
+mkdir data data/audio_files
 ```
 4. Commands can be called individually or sequentially
    1. Convert
@@ -103,4 +102,4 @@ Modify `config.py` file to change the parameters of the dataset creation.
  - [AnalyseDataset.ipynb adapted from coqui-ai example](https://github.com/coqui-ai)
  - [OpenAI Whisper](https://github.com/openai/whisper)
  - [PyAnnote](https://github.com/pyannote/pyannote-audio)
- - [SpeechBrain[(https://github.com/speechbrain/speechbrain)
+ - [SpeechBrain](https://github.com/speechbrain/speechbrain)
