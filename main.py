@@ -5,21 +5,15 @@ from diarizer.embedder import auto_label as _auto_label
 from whisperer.audio_manipulate import convert as _convert
 from whisperer.whisperer import transcribe as _transcribe
 import config.config as CONF
-import click
+import typer
 
 
 seed_all(CONF.seed)
 
-
-@click.group(chain=True)
-def cli():
-    """
-        Whisperer: A tool for creating audio-text datasets.
-    """
-    pass
+app = typer.Typer()
 
 
-@cli.command()
+@app.command()
 def convert():
     """
     Convert all audio files in data/audio_files to .wav.
@@ -36,8 +30,7 @@ def convert():
     print("\t--- Done converting to .wav\n")
 
 
-@cli.command()
-@click.option("--join", is_flag=True, default=True)
+@app.command()
 def diarize(join):
     """
     Diarize all audio files in data/audio_files_wav.
@@ -60,10 +53,10 @@ def diarize(join):
         speaker_paths.SPEAKERS,
         join_speaker=join,
     )
-    print(f"\t--- Done diarizing\n")
+    print("\t--- Done diarizing\n")
 
-@cli.command()
-@click.argument("num_speakers", type=int, required=True)
+
+@app.command()
 def auto_label(num_speakers):
     """
     Auto label all audio files in data/audio_files_wav/speakers
@@ -81,15 +74,15 @@ def auto_label(num_speakers):
         num_speakers,
         speaker_paths.get_speakers_wavs(),
         speaker_paths.SPEAKERS_METADATA)
-    print(f"\t--- Done auto labeling\n")
+    print("\t--- Done auto labeling\n")
 
-@cli.command()
-@click.argument("dataset_name")
+
+@app.command()
 def transcribe(dataset_name):
     """
     Transcribe all audio files. data/speakers must
     has priority over data/audio_files_wav.
-    
+
     \b
     OPTION
         dataset_name: Name of the dataset.
@@ -99,7 +92,7 @@ def transcribe(dataset_name):
     dataset_paths = DatasetPaths(__file__, dataset_name)
 
     print(f"## Running whisper on all files in {dataset_paths.AUDIO_FILES_WAV}")
-    
+
     # Check if speakers audio exists
     # Since speakers audio has priority over audio_files_wav
     if dataset_paths.number_of_speakers() > 0:
@@ -118,4 +111,12 @@ def transcribe(dataset_name):
     print(f"## Done creating dataset {dataset_name} ##")
 
 
-cli()
+@app.callback()
+def main(context: typer.Context):
+    """
+    Main function of Whisperer.
+    Deals with the order of execution of the functions.
+    """
+
+if __name__ == "__main__":
+    app()
