@@ -25,8 +25,7 @@ class DefaultPaths:
     def __init__(self, data_path):
         self.DATA_PATH = Path(data_path)
         self.RAW_FILES = self.DATA_PATH.joinpath("raw_files")
-        self.WAV_FILES = self.DATA_PATH.joinpath("audio_files_converted")
-        self.DATASET_DIR = self.DATA_PATH.joinpath("datasets")
+        self.WAV_FILES = self.DATA_PATH.joinpath("wav_files")
 
         self.mandatory_paths = [self.DATA_PATH, self.RAW_FILES]
         self.paths = [self.WAV_FILES, self.DATASET_DIR]
@@ -50,6 +49,10 @@ class DefaultPaths:
         if not len(self.get_raw_files()):
             raise FileNotFoundError(f"No files found in {self.RAW_FILES}")
 
+    def _are_wav_files_present(self) -> None:
+        if not len(self.get_wav_files()):
+            raise FileNotFoundError(f"No files found in {self.WAV_FILES}")
+
     def get_raw_files(self) -> List[Path]:
         raw_files = []
         for raw_file in self.RAW_FILES.iterdir():
@@ -61,10 +64,7 @@ class DefaultPaths:
 
     def get_wav_files(self) -> List[Path]:
         return [
-            wav_file
-            for wav_file in self.WAV_FILES.iterdir()
-            if wav_file.is_file() and wav_file.suffix == ".wav"
+            wav
+            for wav in self.WAV_FILES.iterdir()
+            if wav.is_file() and wav.suffix == ".wav"
         ]
-
-    def get_datasets(self) -> List[Path]:
-        return [dataset for dataset in self.DATASET_DIR.iterdir() if dataset.is_dir()]

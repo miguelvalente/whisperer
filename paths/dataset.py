@@ -7,6 +7,7 @@ import logging
 class DatasetPaths(SpeakerPaths):
     def __init__(self, data_path, dataset_name):
         super().__init__(data_path)
+        self.DATASET_DIR = self.DATA_PATH.joinpath("datasets")
         self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
         self.TRANSCRIPTIONS = self.DATASET.joinpath("transcriptions")
         self.WAVS_DIR = self.DATASET.joinpath("wavs")
@@ -14,29 +15,16 @@ class DatasetPaths(SpeakerPaths):
 
         self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS_DIR]
 
-        self._check_audio_files_wav_presence()
-        self._prepare_for_dataset()
+        self._make_dataset_strucutre()
 
-    def _check_audio_files_wav_presence(self) -> None:
-        if not len(self.get_wav_files()):
-            logging.error(
-                f"No audio_files_wav found in {self.WAV_FILES}."
-                " Please place audio files in 'data/audio_files' and run:\n"
-                "\tpython main.py convert"
-            )
-            exit(1)
-
-    def _touch_metadata(self) -> None:
-        self.METADATA.touch(exist_ok=True)
-
-    def _prepare_for_dataset(self) -> None:
+    def _make_dataset_strucutre(self) -> None:
         if self.DATASET.exists():
             logging.error(
-                f"Dataset {self.DATASET} already exists. Delete folder or choose a different dataset name"
+                f"Dataset {self.DATASET} already exists.\n Delete folder or choose a different dataset name"
             )
         else:
             self._make_paths()
-            self._touch_metadata()
+            self.METADATA.touch(exist_ok=True)
 
     def get_transcriptions(self) -> List[Path]:
         return [

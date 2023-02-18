@@ -11,18 +11,15 @@ class SpeakerPaths(DefaultPaths):
         self.SPEAKERS_METADATA = self.SPEAKERS.joinpath("spekers_metadata.txt")
 
         self.paths = [self.SPEAKERS]
-        self._check_audio_files_wav_presence()
 
         self._make_paths()
 
-    def _check_audio_files_wav_presence(self) -> None:
-        if not len(self.get_wav_files()):
-            logging.error(
-                f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
-                " Please place audio files in 'data/audio_files' and run:\n"
-                "\tpython main.py convert"
-            )
-            exit(1)
+    def _make_paths(self) -> None:
+        self._assert_mandatory_paths()
+        self._are_wav_files_present()
+
+        for path in self.paths:
+            path.mkdir(exist_ok=True)
 
     def number_of_speakers(self) -> int:
         return len(self.get_speakers_wavs())
