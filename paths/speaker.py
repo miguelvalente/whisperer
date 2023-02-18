@@ -5,9 +5,9 @@ import logging
 
 
 class SpeakerPaths(DefaultPaths):
-    def __init__(self, main_path):
-        super().__init__(main_path)
-        self.SPEAKERS = self.AUDIO_FILES_WAV.joinpath("speakers")
+    def __init__(self, data_path):
+        super().__init__(data_path)
+        self.SPEAKERS = self.AUDIO_FILES_.joinpath("speakers")
         self.SPEAKERS_METADATA = self.SPEAKERS.joinpath("spekers_metadata.txt")
 
         self.paths = [self.SPEAKERS]
@@ -16,7 +16,7 @@ class SpeakerPaths(DefaultPaths):
         self._make_paths()
 
     def _check_audio_files_wav_presence(self) -> None:
-        if not len(self.get_audio_files_wav()):
+        if not len(self.get_wav_files()):
             logging.error(
                 f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
                 " Please place audio files in 'data/audio_files' and run:\n"

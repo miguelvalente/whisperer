@@ -5,8 +5,8 @@ import logging
 
 
 class DatasetPaths(SpeakerPaths):
-    def __init__(self, main_path, dataset_name):
-        super().__init__(main_path)
+    def __init__(self, data_path, dataset_name):
+        super().__init__(data_path)
         self.DATASET = self.DATASET_DIR.joinpath(dataset_name)
         self.TRANSCRIPTIONS = self.DATASET.joinpath("transcriptions")
         self.WAVS_DIR = self.DATASET.joinpath("wavs")
@@ -18,9 +18,9 @@ class DatasetPaths(SpeakerPaths):
         self._prepare_for_dataset()
 
     def _check_audio_files_wav_presence(self) -> None:
-        if not len(self.get_audio_files_wav()):
+        if not len(self.get_wav_files()):
             logging.error(
-                f"No audio_files_wav found in {self.AUDIO_FILES_WAV}."
+                f"No audio_files_wav found in {self.WAV_FILES}."
                 " Please place audio files in 'data/audio_files' and run:\n"
                 "\tpython main.py convert"
             )

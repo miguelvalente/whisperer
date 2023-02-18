@@ -8,18 +8,28 @@ import logging
 #     level=logging.DEBUG,
 # )
 
+FFMEPG_FORMATS = [
+    ".mp3",
+    ".wav",
+    ".ogg",
+    ".flac",
+    ".aac",
+    ".m4a",
+    ".mp4",
+    ".avi",
+    ".mkv",
+]
+
 
 class DefaultPaths:
-    def __init__(self, main_path):
-        main_path = Path(main_path)
-        self.BASE_PATH = main_path.parent if main_path.is_file() else main_path
-        self.DATA_PATH = self.BASE_PATH.joinpath("data")
-        self.AUDIO_FILES = self.DATA_PATH.joinpath("audio_files")
-        self.AUDIO_FILES_WAV = self.DATA_PATH.joinpath("audio_files_wav")
+    def __init__(self, data_path):
+        self.DATA_PATH = Path(data_path)
+        self.RAW_FILES = self.DATA_PATH.joinpath("raw_files")
+        self.WAV_FILES = self.DATA_PATH.joinpath("audio_files_converted")
         self.DATASET_DIR = self.DATA_PATH.joinpath("datasets")
 
-        self.mandatory_paths = [self.DATA_PATH, self.AUDIO_FILES]
-        self.paths = [self.AUDIO_FILES_WAV, self.DATASET_DIR]
+        self.mandatory_paths = [self.DATA_PATH, self.RAW_FILES]
+        self.paths = [self.WAV_FILES, self.DATASET_DIR]
 
         self._make_paths()
 
@@ -32,32 +42,28 @@ class DefaultPaths:
 
     def _assert_mandatory_paths(self) -> None:
         for path in self.mandatory_paths:
-            assert path.exists(), f"Path {path} does not exist"
+            assert (
+                path.exists()
+            ), f"Path {path} does not exist\n The following paths are mandatory: {self.mandatory_paths}"
 
-    def _ensure_audio_files_are_present(self):
-        if not len(self.get_audio_files()):
-            raise FileNotFoundError(f"No audio_files found in {self.AUDIO_FILES}")
+    def _ensure_audio_files_are_present(self) -> None:
+        if not len(self.get_raw_files()):
+            raise FileNotFoundError(f"No files found in {self.RAW_FILES}")
 
-    def _assert_wav_files(self, directory: Path) -> None:
-        for audio_file in directory.iterdir():
-            if audio_file.is_file():
+    def get_raw_files(self) -> List[Path]:
+        raw_files = []
+        for raw_file in self.RAW_FILES.iterdir():
+            if raw_file.is_file():
                 assert (
-                    audio_file.suffix == ".wav"
-                ), f"File {audio_file} is not a .wav file"
+                    raw_file.suffix in FFMEPG_FORMATS
+                ), f"File {raw_file} is not a valid audio file\n Allowed formats: {FFMEPG_FORMATS}"
+                raw_files.append(raw_file)
 
-    def get_audio_files(self) -> List[Path]:
+    def get_wav_files(self) -> List[Path]:
         return [
-            audio_file
-            for audio_file in self.AUDIO_FILES.iterdir()
-            if audio_file.is_file()
-        ]
-
-    def get_audio_files_wav(self) -> List[Path]:
-        self._assert_wav_files(self.AUDIO_FILES_WAV)
-        return [
-            audio_file
-            for audio_file in self.AUDIO_FILES_WAV.iterdir()
-            if audio_file.is_file()
+            wav_file
+            for wav_file in self.WAV_FILES.iterdir()
+            if wav_file.is_file() and wav_file.suffix == ".wav"
         ]
 
     def get_datasets(self) -> List[Path]:

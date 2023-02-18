@@ -25,7 +25,7 @@ def convert(data_directory: Path):
     default_paths = DefaultPaths(__file__)
 
     print(
-        f"## Converting files in {default_paths.AUDIO_FILES} to .wav with frame_rate=16000"
+        f"## Converting files in {default_paths.RAW_FILES} to .wav with frame_rate=16000"
     )
     _convert(default_paths)
     print("\t--- Done converting to .wav\n")
@@ -48,9 +48,9 @@ def diarize(join):
 
     speaker_paths = SpeakerPaths(__file__)
 
-    print(f"## Diarizing all files in {speaker_paths.AUDIO_FILES_WAV}")
+    print(f"## Diarizing all files in {speaker_paths.WAV_FILES}")
     _diarize(
-        speaker_paths.get_audio_files_wav(),
+        speaker_paths.get_wav_files(),
         speaker_paths.SPEAKERS,
         join_speaker=join,
     )
@@ -91,14 +91,14 @@ def transcribe(dataset_name):
     dataset_name = f"{dataset_name}_{CONF.seed}"
     dataset_paths = DatasetPaths(__file__, dataset_name)
 
-    print(f"## Running whisper on all files in {dataset_paths.AUDIO_FILES_WAV}")
+    print(f"## Running whisper on all files in {dataset_paths.WAV_FILES}")
 
     # Check if speakers audio exists
     # Since speakers audio has priority over audio_files_wav
     if dataset_paths.number_of_speakers() > 0:
         audio_files = dataset_paths.get_speakers_wavs()
     else:
-        audio_files = dataset_paths.get_audio_files_wav()
+        audio_files = dataset_paths.get_wav_files()
 
     _transcribe(
         audio_files,
