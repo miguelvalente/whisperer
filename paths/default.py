@@ -35,7 +35,7 @@ class DefaultPaths:
 
     def _make_paths(self) -> None:
         self._assert_mandatory_paths()
-        self._ensure_audio_files_are_present()
+        self._are_raw_files_present()
 
         for path in self.paths:
             path.mkdir(exist_ok=True)
@@ -46,7 +46,7 @@ class DefaultPaths:
                 path.exists()
             ), f"Path {path} does not exist\n The following paths are mandatory: {self.mandatory_paths}"
 
-    def _ensure_audio_files_are_present(self) -> None:
+    def _are_raw_files_present(self) -> None:
         if not len(self.get_raw_files()):
             raise FileNotFoundError(f"No files found in {self.RAW_FILES}")
 
