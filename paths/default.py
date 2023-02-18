@@ -28,7 +28,7 @@ class DefaultPaths:
         self.WAV_FILES = self.DATA_PATH.joinpath("wav_files")
 
         self.mandatory_paths = [self.DATA_PATH, self.RAW_FILES]
-        self.paths = [self.WAV_FILES, self.DATASET_DIR]
+        self.paths = [self.WAV_FILES]
 
         self._make_paths()
 
@@ -61,6 +61,8 @@ class DefaultPaths:
                     raw_file.suffix in FFMEPG_FORMATS
                 ), f"File {raw_file} is not a valid audio file\n Allowed formats: {FFMEPG_FORMATS}"
                 raw_files.append(raw_file)
+
+        return raw_files
 
     def get_wav_files(self) -> List[Path]:
         return [

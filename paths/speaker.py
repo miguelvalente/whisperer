@@ -7,7 +7,7 @@ import logging
 class SpeakerPaths(DefaultPaths):
     def __init__(self, data_path):
         super().__init__(data_path)
-        self.SPEAKERS = self.AUDIO_FILES_.joinpath("speakers")
+        self.SPEAKERS = self.WAV_FILES.joinpath("speakers")
         self.SPEAKERS_METADATA = self.SPEAKERS.joinpath("spekers_metadata.txt")
 
         self.paths = [self.SPEAKERS]

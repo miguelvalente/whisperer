@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import List
-from paths.default import SpeakerPaths
+from . import SpeakerPaths
 import logging
 
 
@@ -13,7 +13,7 @@ class DatasetPaths(SpeakerPaths):
         self.WAVS_DIR = self.DATASET.joinpath("wavs")
         self.METADATA = self.DATASET.joinpath("metadata.txt")
 
-        self.paths = [self.DATASET, self.TRANSCRIPTIONS, self.WAVS_DIR]
+        self.paths = [self.DATASET_DIR, self.DATASET, self.TRANSCRIPTIONS, self.WAVS_DIR]
 
         self._make_dataset_strucutre()
 
