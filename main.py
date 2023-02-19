@@ -7,6 +7,8 @@ from whisperer.whisperer import transcribe as _transcribe
 from pathlib import Path
 import config.config as CONF
 import typer
+from typing import Optional
+import logging
 
 
 seed_all(CONF.seed)
@@ -31,7 +33,9 @@ def convert(data_directory: Path) -> None:
 
 
 @app.command()
-def diarize(data_directory: Path, join: bool) -> None:
+def diarize(
+    data_directory: Path, join: Optional[bool] = typer.Option(True, "--dont-join")
+) -> None:
     convert(data_directory)
     """
     Diarize all audio files in data/audio_files_wav.
@@ -58,8 +62,14 @@ def diarize(data_directory: Path, join: bool) -> None:
 
 
 @app.command()
-def auto_label(data_directory: Path, num_speakers: int) -> None:
-    diarize(data_directory, join=True)
+def auto_label(
+    data_directory: Path,
+    num_speakers: int,
+    diarize_flag: Optional[bool] = typer.Option(False, "--diarize"),
+    join: Optional[bool] = typer.Option(True, "--dont-join"),
+) -> None:
+    if diarize_flag:
+        diarize(data_directory, join=join)
     """
     Auto label all audio files in data/audio_files_wav/speakers
 
@@ -114,21 +124,25 @@ def transcribe(data_directory: Path, dataset_name: str) -> None:
 
 
 @app.callback()
-def main(context: typer.Context,):
+def main(
+    verbose: Optional[bool] = typer.Option(False, "--verbose"),
+    debug: Optional[bool] = typer.Option(False, "--debug"),
+) -> None:
     """
-    Main function of Whisperer.
-    Deals with the order of execution of the functions.
+    Run all the commands in the correct order.
     """
-    # match context.invoked_subcommand:
-    #     case "convert":
-    #         pass
-    #     case "diarize", "transcribe":
-    #         convert()
-    #         pass
-    #     case "auto_label":
-    #         diarize(join=True)
-    #     case other:
-    #         typer.echo("Please specify a subcommand")
+    if verbose:
+        logging.basicConfig(
+            format="%(asctime)s %(levelname)-8s %(message)s",
+            level=logging.INFO,
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+    if debug:
+        logging.basicConfig(
+            format="%(asctime)s %(levelname)-8s %(message)s",
+            level=logging.DEBUG,
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
 
 
 if __name__ == "__main__":

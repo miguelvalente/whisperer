@@ -1,11 +1,13 @@
+from pyannote.audio import Pipeline
 from sklearn.cluster import AgglomerativeClustering
 from tqdm import tqdm
 import torch
 import torchaudio
 from collections import defaultdict
-
 from typing import List, Tuple
 from pathlib import Path
+
+import logging
 
 
 def diarize_audio(pipeline, wav_file, num_speakers=None):
@@ -66,8 +68,6 @@ def export_speaker_segments(
 
 
 def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:
-    from pyannote.audio import Pipeline
-
     diarizing_pipeling = Pipeline.from_pretrained(
         "pyannote/speaker-diarization",
         use_auth_token="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",

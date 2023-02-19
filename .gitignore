@@ -3,3 +3,4 @@ data/
 output/
 **__pycache__**
 test.ipynb
+*ckpt
