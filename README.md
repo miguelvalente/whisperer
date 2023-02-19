@@ -58,23 +58,19 @@ mkdir data data/audio_files
 4. Commands can be called individually or sequentially
    1. Convert
       ```
-      python -m main convert
+      python -m main convert path/to/your/data/folder
       ```
-   2. Diarize *(requires converted to be called first)*
+   2. Diarize 
       ```
-      python -m main diarize
+      python -m main diarize path/to/your/data/folder
       ```
-   3. Auto-Label *(requires diarize to be called first)*
+   3. Auto-Label 
       ```
-      python -m main auto-label number_of_speakers_present_in_your_audio_file_
+      python -m main auto-label path/to/your/data/folder target_number_of_speakers
       ```
-   4. Transcribe *(requires converted to be called first)*
+   4. Transcribe 
       ```
       python -m main transcribe your_dataset_name
-      ```
-   5. Convert & Diarize & Auto-Label & Transcribe
-      ```
-      python -m main convert diarize auto-label 6 transcribe your_dataset_name
       ```
 
 5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
@@ -82,7 +78,7 @@ mkdir data data/audio_files
 
 ### Using Multiple-GPUS
 
-The code automatically detects how many GPU's are available and distributes the audio files in ```data/audio_files_wav``` evenly across the GPUs.
+The code automatically detects how many GPU's are available and distributes the audio files in ```data/wav_files``` evenly across the GPUs.
 The automatic detection is done through ```nvidia-smi```.
 
 You can to make the available GPU's explicit by setting the environment variable ```CUDA_AVAILABLE_DEVICES```.
@@ -94,6 +90,7 @@ Modify `config.py` file to change the parameters of the dataset creation.
 ## To Do
 
 - [x] Speech Diarization
+- [ ] Replace click with typer
 
 
 ## Acknowledgements
