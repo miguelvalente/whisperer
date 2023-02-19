@@ -1,15 +1,15 @@
 from pathlib import Path
-from utils.paths import DefaultPaths
+from paths.default import DefaultPaths
 from typing import Optional, List
 import torchaudio
 import subprocess
 
 
 def convert(paths: DefaultPaths) -> None:
-    audio_files = paths.get_audio_files()
+    audio_files = paths.get_raw_files()
 
     for audio_file in audio_files:
-        export_path = paths.AUDIO_FILES_WAV.joinpath(audio_file.stem + ".wav")
+        export_path = paths.WAV_FILES.joinpath(audio_file.stem + ".wav")
 
         if export_path.exists():
             if check_wav_16khz_mono(export_path):
@@ -47,6 +47,7 @@ def check_ffmpeg():
         subprocess.check_output("ffmpeg", stderr=subprocess.STDOUT)
         return True
     except OSError as e:
+        print("ffmpeg not found. Please install ffmpeg and try again.")
         return False
 
 
