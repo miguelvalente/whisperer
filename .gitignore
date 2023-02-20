@@ -3,4 +3,5 @@ data/
 output/
 **__pycache__**
 test.ipynb
-*ckpt
+dist/
+pretrained_models/
