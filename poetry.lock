@@ -2632,6 +2632,28 @@ antlr4-python3-runtime = ">=4.9.0,<4.10.0"
 PyYAML = ">=5.1.0"
 
 [[package]]
+name = "openai-whisper"
+version = "20230124"
+description = "Robust Speech Recognition via Large-Scale Weak Supervision"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "openai-whisper-20230124.tar.gz", hash = "sha256:31adf9353bf0e3f891b6618896f22c65cf78cd6f845a4d5b7125aa5102187f79"},
+]
+
+[package.dependencies]
+ffmpeg-python = "0.2.0"
+more-itertools = "*"
+numpy = "*"
+torch = "*"
+tqdm = "*"
+transformers = ">=4.19.0"
+
+[package.extras]
+dev = ["pytest"]
+
+[[package]]
 name = "optuna"
 version = "3.1.0"
 description = "A hyperparameter optimization framework"
@@ -4987,33 +5009,6 @@ files = [
 test = ["pytest (>=3.0.0)"]
 
 [[package]]
-name = "whisper"
-version = "1.0"
-description = "Robust Speech Recognition via Large-Scale Weak Supervision"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = []
-develop = false
-
-[package.dependencies]
-ffmpeg-python = "0.2.0"
-more-itertools = "*"
-numpy = "*"
-torch = "*"
-tqdm = "*"
-transformers = ">=4.19.0"
-
-[package.extras]
-dev = ["pytest"]
-
-[package.source]
-type = "git"
-url = "https://github.com/openai/whisper.git"
-reference = "HEAD"
-resolved_reference = "7858aa9c08d98f75575035ecd6481f462d66ca27"
-
-[[package]]
 name = "widgetsnbextension"
 version = "4.0.5"
 description = "Jupyter interactive widgets for Jupyter Notebook"
@@ -5116,4 +5111,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "2bb33ac2e0f1ce1f8c2a9ae2ed8b55d464c82316c6157b1854c65a8810a25250"
+content-hash = "908194f2c0218ad8ccf7266c11ca181e4e36f8881fa935bfbf6595e758b27245"
