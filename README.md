@@ -3,6 +3,9 @@
 
 Go from raw audio files to a speaker separated text-audio datasets automatically.
 
+![plot](https://github.com/miguelvalente/whisperer/blob/master/logo.png?raw=true)
+
+
 ## Table of Contents
 
 - [Summary](#summary)
