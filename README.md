@@ -3,6 +3,17 @@
 
 Go from raw audio files to a speaker separated text-audio datases automatically.
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Key Features](#key-features)
+- [Instalation](#instalation)
+- [How to use:](#how-to-use)
+   - [Using Multiple-GPUS](#using-multiple-gpus)
+   - [Configuration](#configuration)
+- [To Do](#to-do)
+- [Acknowledgements](#acknowledgements)
+
 ## Summary
 
 This repo takes a directory of audio files and converts them to a text-audio dataset with normalized distribution of audio lengths. *See ```AnalyzeDataset.ipynb``` for examples of the dataset distributions across audio and text length*
@@ -24,8 +35,6 @@ peters_1.wav|Explicit is better than implicit.
 
 ```
 
-
-
 ## Key Features
 
 * Audio files are automatically split by speakers
@@ -36,45 +45,41 @@ peters_1.wav|Explicit is better than implicit.
 * Leverages the GPUs available on your machine. GPUs also be set explicitly if you only want to use some.
 
 
+## Instalation
+
+Install from PyPi with pip
+```
+pip install whisperer-ml
+```
 
 ## How to use:
 
-1. Clone the repo
-```
-git clone https://github.com/miguelvalente/whisperer.git
-```
-2. Install the dependencies
-      - Install [Poetry](https://python-poetry.org/docs/)
-```
-cd whisperer
-poetry install
-poetry shell
-```
 
-3. Create data folder and move audio files to it
+1. Create data folder and move audio files to it
 ```
-mkdir data data/audio_files
+mkdir data data/raw_files
 ```
-4. Commands can be called individually or sequentially
+2. There are four commands
    1. Convert
       ```
-      python -m main convert path/to/your/data/folder
+      whisperer-ml convert path/to/data/raw_files
       ```
    2. Diarize 
       ```
-      python -m main diarize path/to/your/data/folder
+      whisperer-ml diarize path/to/data/raw_files
       ```
    3. Auto-Label 
       ```
-      python -m main auto-label path/to/your/data/folder target_number_of_speakers
+      whisperer-ml auto-label path/to/data/raw_files number_speakers
       ```
    4. Transcribe 
       ```
-      python -m main transcribe your_dataset_name
+      whisperer-ml transcribe path/to/data/raw_files your_dataset_name
       ```
 
-5. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
-6. Use the ```AnalyseSilence.ipynb``` notebook to experiment with silence detection configuration
+
+3. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
+4. Use the ```AnalyseSilence.ipynb``` notebook to experiment with silence detection configuration
 
 ### Using Multiple-GPUS
 
@@ -85,12 +90,11 @@ You can to make the available GPU's explicit by setting the environment variable
 
 ### Configuration
 
-Modify `config.py` file to change the parameters of the dataset creation.
-
+Modify `config.py` file to change the parameters of the dataset creation. Including silence detection.
 ## To Do
 
 - [x] Speech Diarization
-- [ ] Replace click with typer
+- [x] Replace click with typer
 
 
 ## Acknowledgements
