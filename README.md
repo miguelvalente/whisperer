@@ -79,6 +79,14 @@ mkdir data data/raw_files
       ```
       whisperer_ml transcribe path/to/data/raw_files your_dataset_name
       ```
+   5. Help lists all commands 
+      ```
+      whisperer_ml --help 
+      ```
+   6. You can run help on a specific command
+   ```
+      whisperer_ml convert --help
+   ```
 
 
 3. Use the ```AnalyseDataset.ipynb``` notebook to visualize the distribution of the dataset
