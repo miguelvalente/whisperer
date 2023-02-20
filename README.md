@@ -1,7 +1,7 @@
 
 # whisperer
 
-Go from raw audio files to a speaker separated text-audio datases automatically.
+Go from raw audio files to a speaker separated text-audio datasets automatically.
 
 ## Table of Contents
 
