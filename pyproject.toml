@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "whisperer"
-version = "0.1.2"
+name = "whisperer_ml"
+version = "0.1.3"
 description = "Go from raw audio to a text-audio dataset with OpenAI's Whisper"
 authors = ["miguelvalente <miguelvalente@protonmail.com>"]
 readme = "README.md"

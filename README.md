@@ -65,19 +65,19 @@ mkdir data data/raw_files
 2. There are four commands
    1. Convert
       ```
-      whisperer-ml convert path/to/data/raw_files
+      whisperer_ml convert path/to/data/raw_files
       ```
    2. Diarize 
       ```
-      whisperer-ml diarize path/to/data/raw_files
+      whisperer_ml diarize path/to/data/raw_files
       ```
    3. Auto-Label 
       ```
-      whisperer-ml auto-label path/to/data/raw_files number_speakers
+      whisperer_ml auto-label path/to/data/raw_files number_speakers
       ```
    4. Transcribe 
       ```
-      whisperer-ml transcribe path/to/data/raw_files your_dataset_name
+      whisperer_ml transcribe path/to/data/raw_files your_dataset_name
       ```
 
 
