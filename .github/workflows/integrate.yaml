@@ -35,8 +35,8 @@ jobs:
       - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/raw_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
       - run: ls data/raw_files 
       - run: poetry install
-      - run: poetry run whisperer_ml convert data/
-      - run: poetry run whisperer_ml transcribe data/ dataset
+      - run: poetry run whisperer_ml --debug convert data/
+      - run: poetry run whisperer_ml --debug transcribe data/ dataset
       # - run: poetry run python main.py convert
       # - run: poetry run python main.py diarize
       # - run: poetry run python main.py auto-label 5
