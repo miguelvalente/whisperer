@@ -8,7 +8,7 @@ class SpeakerPaths(DefaultPaths):
     def __init__(self, data_path):
         super().__init__(data_path)
         self.SPEAKERS = self.WAV_FILES.joinpath("speakers")
-        self.SPEAKERS_METADATA = self.SPEAKERS.joinpath("spekers_metadata.txt")
+        self.SPEAKERS_METADATA = self.SPEAKERS.joinpath("speakers_metadata.txt")
 
         self.paths = [self.SPEAKERS]
 

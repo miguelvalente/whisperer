@@ -1,9 +1,11 @@
-import numpy as np
+import subprocess
 from pathlib import Path
-from sklearn.cluster import AgglomerativeClustering
 from typing import List
+
+import numpy as np
 import torch
 import torchaudio
+from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics import pairwise_distances
 from speechbrain.pretrained import EncoderClassifier
 
@@ -47,10 +49,16 @@ def label_embeddings(sim_matrix: np.array, num_speakers: int) -> List[str]:
 def auto_label(
     num_speakers: int, audio_files: List[Path], speakers_metadata: Path
 ) -> None:
+    try:
+        subprocess.check_output("nvidia-smi")
+        device = "cuda"
+    except Exception:
+        device = "cpu"
+
     embedder = EncoderClassifier.from_hparams(
         source="speechbrain/spkrec-ecapa-voxceleb",
         savedir="pretrained_models/spkrec-ecapa-voxceleb",
-        run_opts="cuda",
+        run_opts=device,
     )
 
     embeds = []
