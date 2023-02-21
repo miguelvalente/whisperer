@@ -7,7 +7,7 @@ on:
 
 jobs:
   Whisperer_Unit_Testing:
-    runs-on: [ubuntu-latest, gpu]
+    runs-on: [ubuntu-latest]
     steps:
       - name: Setup yt-dlp
         uses: AnimMouse/setup-yt-dlp@v1
