@@ -1,18 +1,19 @@
+import logging
 import math
 import subprocess
-from multiprocessing import Process
-
-import torchaudio
-import torch
-import whisper
-import numpy as np
-from typing import Tuple, List
 from collections import deque
-from librosa import effects
+from multiprocessing import Process
 from pathlib import Path
-from whisperer_ml.utils.utils import get_available_gpus, grouper
+from typing import List, Tuple
+
+import numpy as np
+import torch
+import torchaudio
+import whisper
+from librosa import effects
 
 import whisperer_ml.config.config as CONF
+from whisperer_ml.utils.utils import get_available_gpus, grouper
 
 
 def initialize_whisperer(
@@ -127,6 +128,7 @@ def whisperer(
     device: str,
     fp16: bool,
 ) -> None:
+    logging.debug({f"Device: {device}"})
     model, options = initialize_whisperer(device, fp16)
 
     if audio_files_wav is None:

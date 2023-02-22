@@ -7,14 +7,14 @@ on:
 
 jobs:
   Whisperer_Unit_Testing:
-    runs-on: [ubuntu-latest, gpu]
+    runs-on: [ubuntu-latest]
     steps:
       - name: Setup yt-dlp
         uses: AnimMouse/setup-yt-dlp@v1
         with:
           with-ffmpeg: true
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - name: Install and configure Poetry
@@ -25,17 +25,21 @@ jobs:
           virtualenvs-in-project: false
           # virtualenvs-path: ~/my-custom-path
           installer-parallel: true
-      - run: mkdir -p  /home/runner/work/whisperer/whisperer/data/audio_files
+      - run: mkdir -p  /home/runner/work/whisperer/whisperer/data/raw_files
       - run: pwd
-      - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/audio_files/lex_debate.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
-      - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
-      - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
-      - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/audio_files/lex_levin1.wav "https://www.youtube.com/watch?v=wNqhp5qiufA"
-      - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/audio_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
-      - run: ls data/audio_files 
-      - run: poetry install
       - run: sudo apt-get install libsndfile1-dev
-      - run: poetry run python main.py convert
-      - run: poetry run python main.py diarize
-      - run: poetry run python main.py auto-label 5
-      - run: poetry run python main.py transcribe test
+      - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/raw_files/lex_biologist.wav "https://www.youtube.com/watch?v=gnUdEYTZAA0"
+      - run: ls data/raw_files 
+      - run: poetry install
+      - run: poetry run whisperer_ml --debug convert data/
+      - run: poetry run whisperer_ml --debug diarize data/
+      - run: poetry run whisperer_ml --debug auto-label data/ 2
+      - run: poetry run whisperer_ml --debug transcribe data/ dataset
+      - run: cat data/datasets/dataset_42/metadata.txt
+
+
+      # - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/raw_files/lex_debate.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
+      # - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/raw_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
+      # - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/raw_files/lex_levin0.wav "https://www.youtube.com/watch?v=ZSddchIGNG0"
+      # - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/raw_files/lex_levin1.wav "https://www.youtube.com/watch?v=wNqhp5qiufA"
+      # - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/raw_files/lex_levin2.wav "https://www.youtube.com/watch?v=yRMIZrn8IuE"
