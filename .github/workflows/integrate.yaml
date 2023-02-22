@@ -36,6 +36,8 @@ jobs:
       - run: poetry run whisperer_ml --debug diarize data/
       - run: poetry run whisperer_ml --debug auto-label data/ 2
       - run: poetry run whisperer_ml --debug transcribe data/ dataset
+      - run: cat data/datasets/dataset_42/metadata.txt
+
 
       # - run: yt-dlp -x  --downloader aria2c --audio-format wav -o data/raw_files/lex_debate.wav "https://www.youtube.com/watch?v=opMZib2qqeM"
       # - run: yt-dlp -x --downloader aria2c --audio-format wav -o data/raw_files/lex_carmack1.wav "https://www.youtube.com/watch?v=xzPuGf89vpI"
