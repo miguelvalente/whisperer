@@ -7,6 +7,21 @@ from typing import List, Tuple
 from pathlib import Path
 
 
+#Speaker Paths
+#speakers
+def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:
+    diarizing_pipeling = Pipeline.from_pretrained(
+        "pyannote/speaker-diarization",
+        use_auth_token="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",
+    )
+
+    for audio_file in tqdm(audio_files, desc="Diarizing"):
+        speakers_segments = diarize_audio(diarizing_pipeling, audio_file)
+        if join_speaker:
+            export_joined_speaker_segment(speakers_path, audio_file, speakers_segments)
+        else:
+            export_speaker_segments(speakers_path, audio_file, speakers_segments)
+
 def diarize_audio(pipeline, wav_file, num_speakers=None):
     diarization = pipeline(str(wav_file))
 
@@ -63,16 +78,3 @@ def export_speaker_segments(
         speaker_path = speakers_path.joinpath(f"{audio_path.stem}_{speaker}_{idx}.wav")
         torchaudio.save(speaker_path, audio_segment, sampling_rate)
 
-
-def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:
-    diarizing_pipeling = Pipeline.from_pretrained(
-        "pyannote/speaker-diarization",
-        use_auth_token="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",
-    )
-
-    for audio_file in tqdm(audio_files, desc="Diarizing"):
-        speakers_segments = diarize_audio(diarizing_pipeling, audio_file)
-        if join_speaker:
-            export_joined_speaker_segment(speakers_path, audio_file, speakers_segments)
-        else:
-            export_speaker_segments(speakers_path, audio_file, speakers_segments)

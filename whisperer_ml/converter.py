@@ -5,11 +5,13 @@ import torchaudio
 import subprocess
 
 
+# DefaultPaths
+# WAV_FILES
 def convert(paths: DefaultPaths) -> None:
     audio_files = paths.get_raw_files()
 
     for audio_file in audio_files:
-        export_path = paths.WAV_FILES.joinpath(audio_file.stem + ".wav")
+        export_path = paths.WAV_FILES.joinpath(audio_file.stem + ".wav")                
 
         if export_path.exists():
             if check_wav_16khz_mono(export_path):
