@@ -1,14 +1,13 @@
-from pyannote.audio import Pipeline
-from tqdm import tqdm
+from collections import defaultdict
+from pathlib import Path
+from typing import List, Tuple
+
 import torch
 import torchaudio
-from collections import defaultdict
-from typing import List, Tuple
-from pathlib import Path
+from pyannote.audio import Pipeline
+from tqdm import tqdm
 
 
-#Speaker Paths
-#speakers
 def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:
     diarizing_pipeling = Pipeline.from_pretrained(
         "pyannote/speaker-diarization",
@@ -21,6 +20,7 @@ def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) ->
             export_joined_speaker_segment(speakers_path, audio_file, speakers_segments)
         else:
             export_speaker_segments(speakers_path, audio_file, speakers_segments)
+
 
 def diarize_audio(pipeline, wav_file, num_speakers=None):
     diarization = pipeline(str(wav_file))
@@ -77,4 +77,3 @@ def export_speaker_segments(
 
         speaker_path = speakers_path.joinpath(f"{audio_path.stem}_{speaker}_{idx}.wav")
         torchaudio.save(speaker_path, audio_segment, sampling_rate)
-

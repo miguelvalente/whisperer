@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
+
 from whisperer_ml.paths.default import DefaultPaths
-import logging
 
 
 class SpeakerPaths(DefaultPaths):

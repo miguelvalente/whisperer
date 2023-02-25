@@ -1,17 +1,18 @@
-from whisperer_ml.paths.default import DefaultPaths
-from whisperer_ml.utils.utils import seed_all
-from whisperer_ml.paths.speaker import SpeakerPaths
-from whisperer_ml.paths.dataset import DatasetPaths
-from whisperer_ml.diarizer import diarize as _diarize
-from whisperer_ml.converter import convert as _convert
-from whisperer_ml.transcriber import transcribe as _transcribe
-from whisperer_ml.auto_labeler import auto_label as _auto_label
-from pathlib import Path
-import whisperer_ml.config.config as CONF
-import typer
-from typing import Optional
 import logging
+from pathlib import Path
+from typing import Optional
 
+import typer
+
+import whisperer_ml.config.config as CONF
+from whisperer_ml.utils.utils import seed_all
+from whisperer_ml.converter import convert as _convert
+from whisperer_ml.diarizer import diarize as _diarize
+from whisperer_ml.auto_labeler import auto_label as _auto_label
+from whisperer_ml.transcriber import transcribe as _transcribe
+from whisperer_ml.paths.default import DefaultPaths
+from whisperer_ml.paths.dataset import DatasetPaths
+from whisperer_ml.paths.speaker import SpeakerPaths
 
 seed_all(CONF.seed)
 
@@ -30,7 +31,7 @@ def convert(data_directory: Path) -> None:
     print(
         f"## Converting files in {default_paths.RAW_FILES} to .wav with frame_rate=16000"
     )
-    _convert(default_paths)
+    _convert(default_paths.RAW_FILES, default_paths.WAV_FILES)
     print("\t--- Done converting to .wav\n")
 
 
@@ -70,8 +71,6 @@ def auto_label(
     diarize_flag: Optional[bool] = typer.Option(False, "--diarize"),
     join: Optional[bool] = typer.Option(True, "--dont-join"),
 ) -> None:
-    if diarize_flag:
-        diarize(data_directory, join=join)
     """
     Auto label all audio files in data/audio_files_wav/speakers
 
@@ -80,6 +79,9 @@ def auto_label(
         num_speakers: Number of speakers to label
 
     """
+
+    if diarize_flag:
+        diarize(data_directory, join=join)
 
     speaker_paths = SpeakerPaths(data_directory)
 
@@ -145,7 +147,3 @@ def main(
             level=logging.DEBUG,
             datefmt="%Y-%m-%d %H:%M:%S",
         )
-
-
-# if __name__ == "__main__":
-#     app()

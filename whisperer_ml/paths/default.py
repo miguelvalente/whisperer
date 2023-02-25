@@ -1,12 +1,5 @@
 from pathlib import Path
 from typing import List
-import logging
-
-# logging.basicConfig(
-#     format="[%(filename)s:%(lineno)d] %(message)s",
-#     datefmt="%Y-%m-%d:%H:%M:%S",
-#     level=logging.DEBUG,
-# )
 
 FFMEPG_FORMATS = [
     ".mp3",
