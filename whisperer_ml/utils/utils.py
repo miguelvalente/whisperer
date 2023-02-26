@@ -1,7 +1,8 @@
-import os
 import collections
-from itertools import islice, zip_longest
+import os
 import random
+from itertools import islice, zip_longest
+
 import numpy as np
 import torch
 
@@ -44,8 +45,8 @@ def grouper(n, iterable, padvalue=None):
 
 
 def get_available_gpus():
-    from subprocess import check_output
     from os import environ
+    from subprocess import check_output
 
     if "CUDA_VISIBLE_DEVICES" in environ:
         return len(environ["CUDA_VISIBLE_DEVICES"].split(","))

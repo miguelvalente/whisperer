@@ -1,7 +1,8 @@
+import logging
 from pathlib import Path
 from typing import List
+
 from whisperer_ml.paths.speaker import SpeakerPaths
-import logging
 
 
 class DatasetPaths(SpeakerPaths):

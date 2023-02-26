@@ -1,15 +1,13 @@
-from pathlib import Path
-from whisperer_ml.paths.default import DefaultPaths
-from typing import Optional, List
-import torchaudio
 import subprocess
+from pathlib import Path
+from typing import List, Optional
+
+import torchaudio
 
 
-def convert(paths: DefaultPaths) -> None:
-    audio_files = paths.get_raw_files()
-
-    for audio_file in audio_files:
-        export_path = paths.WAV_FILES.joinpath(audio_file.stem + ".wav")
+def convert(raw_files: List[Path], WAV_FILES: Path) -> None:
+    for audio_file in raw_files:
+        export_path = WAV_FILES.joinpath(audio_file.stem + ".wav")
 
         if export_path.exists():
             if check_wav_16khz_mono(export_path):
