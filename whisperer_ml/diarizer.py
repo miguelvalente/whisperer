@@ -1,11 +1,11 @@
-from collections import defaultdict
-from pathlib import Path
-from typing import List, Tuple
-
-import torch
-import torchaudio
 from pyannote.audio import Pipeline
 from tqdm import tqdm
+import torch
+import torchaudio
+
+from collections import defaultdict
+from typing import List, Tuple
+from pathlib import Path
 
 
 def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:

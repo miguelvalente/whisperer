@@ -1,18 +1,18 @@
-import logging
-from pathlib import Path
-from typing import Optional
+from whisperer_ml.utils.utils import seed_all
+from whisperer_ml.paths.default import DefaultPaths
+from whisperer_ml.paths.speaker import SpeakerPaths
+from whisperer_ml.paths.dataset import DatasetPaths
+from whisperer_ml.diarizer import diarize as _diarize
+from whisperer_ml.converter import convert as _convert
+from whisperer_ml.transcriber import transcribe as _transcribe
+from whisperer_ml.auto_labeler import auto_label as _auto_label
+import whisperer_ml.config.config as CONF
 
 import typer
 
-import whisperer_ml.config.config as CONF
-from whisperer_ml.utils.utils import seed_all
-from whisperer_ml.converter import convert as _convert
-from whisperer_ml.diarizer import diarize as _diarize
-from whisperer_ml.auto_labeler import auto_label as _auto_label
-from whisperer_ml.transcriber import transcribe as _transcribe
-from whisperer_ml.paths.default import DefaultPaths
-from whisperer_ml.paths.dataset import DatasetPaths
-from whisperer_ml.paths.speaker import SpeakerPaths
+from pathlib import Path
+from typing import Optional
+import logging
 
 seed_all(CONF.seed)
 
@@ -31,7 +31,7 @@ def convert(data_directory: Path) -> None:
     print(
         f"## Converting files in {default_paths.RAW_FILES} to .wav with frame_rate=16000"
     )
-    _convert(default_paths.RAW_FILES, default_paths.WAV_FILES)
+    _convert(default_paths.get_raw_files(), default_paths.WAV_FILES)
     print("\t--- Done converting to .wav\n")
 
 
