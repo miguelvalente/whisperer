@@ -49,11 +49,18 @@ peters_1.wav|Explicit is better than implicit.
 
 
 ## Instalation
+You have two options
 
-Install from PyPi with pip
+1.Install from PyPi with pip
+
 ```
 pip install whisperer-ml
 ```
+
+2. User Friendly WebApp
+[Whisperer Web](https://github.com/miguelvalente/whisperer_ml_app)
+
+Note: _Under Development but ready to be used_
 
 ## How to use:
 
