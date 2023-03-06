@@ -51,7 +51,7 @@ peters_1.wav|Explicit is better than implicit.
 ## Instalation
 You have two options
 
-1.Install from PyPi with pip
+1. Install from PyPi with pip
 
 ```
 pip install whisperer-ml
