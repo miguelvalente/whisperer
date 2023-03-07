@@ -32,7 +32,7 @@ def diarize(
 
 
 def diarize_audio(pipeline, wav_file, num_speakers=None) -> List:
-    diarization = pipeline(str(wav_file), num_speakers=None)
+    diarization = pipeline(str(wav_file), num_speakers=num_speakers)
 
     fresh_cuts = diarization.extrude(diarization.get_overlap(), "intersection")
 
