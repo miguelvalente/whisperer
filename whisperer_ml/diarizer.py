@@ -4,26 +4,35 @@ import torch
 import torchaudio
 
 from collections import defaultdict
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from pathlib import Path
 
 
-def diarize(audio_files: List[Path], speakers_path: Path, join_speaker: bool) -> None:
+def diarize(
+    audio_files: List[Path],
+    speakers_path: Path,
+    join_speaker: bool,
+    num_speakers: Optional[List[int]] = None,
+) -> None:
     diarizing_pipeling = Pipeline.from_pretrained(
         "pyannote/speaker-diarization",
         use_auth_token="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",
     )
+    if not num_speakers:
+        num_speakers = [None] * len(audio_files)
 
-    for audio_file in tqdm(audio_files, desc="Diarizing"):
-        speakers_segments = diarize_audio(diarizing_pipeling, audio_file)
+    for idx, audio_file in enumerate(tqdm(audio_files, desc="Diarizing")):
+        speakers_segments = diarize_audio(
+            diarizing_pipeling, audio_file, num_speakers=num_speakers[idx]
+        )
         if join_speaker:
             export_joined_speaker_segment(speakers_path, audio_file, speakers_segments)
         else:
             export_speaker_segments(speakers_path, audio_file, speakers_segments)
 
 
-def diarize_audio(pipeline, wav_file, num_speakers=None):
-    diarization = pipeline(str(wav_file))
+def diarize_audio(pipeline, wav_file, num_speakers=None) -> List:
+    diarization = pipeline(str(wav_file), num_speakers=None)
 
     fresh_cuts = diarization.extrude(diarization.get_overlap(), "intersection")
 
