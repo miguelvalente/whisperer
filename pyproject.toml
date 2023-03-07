@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "whisperer_ml"
-version = "0.1.5"
+version = "0.1.7"
 description = "Go from raw audio to a text-audio dataset with OpenAI's Whisper"
 authors = ["miguelvalente <miguelvalente@protonmail.com>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ readme = "README.md"
 whisperer_ml = "whisperer_ml.main:app"
 
 [tool.poetry.dependencies]
-python  = ">=3.10,<3.11"
+python  = ">=3.9,<3.11"
 librosa="0.8.0"
 numpy="1.22.3"
 pydub="0.25.1"
