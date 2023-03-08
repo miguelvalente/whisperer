@@ -3,7 +3,8 @@
 
 Go from raw audio files to a speaker separated text-audio datasets automatically.
 
-![plot](https://github.com/miguelvalente/whisperer/blob/master/logo.png?raw=true)
+![logo](https://github.com/miguelvalente/whisperer/blob/master/logo_whisperer.png?raw=true)
+
 
 
 ## Table of Contents
@@ -59,6 +60,8 @@ pip install whisperer-ml
 
 2. User Friendly WebApp
 [Whisperer Web](https://github.com/miguelvalente/whisperer_ml_app)
+
+Take a look at the [Demo on your browser](https://miguelvalente-whisperer-ml-app-apphome-deployment-ykyy4l.streamlit.app/).
 
 Note: _Under Development but ready to be used_
 
