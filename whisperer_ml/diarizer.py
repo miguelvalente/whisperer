@@ -7,7 +7,7 @@ from collections import defaultdict
 from typing import List, Tuple, Optional
 from pathlib import Path
 
-
+# REPLACE BY WHISPERX
 def diarize(
     audio_files: List[Path],
     speakers_path: Path,

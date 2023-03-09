@@ -15,7 +15,7 @@ from librosa import effects
 import whisperer_ml.config.config as CONF
 from whisperer_ml.utils.utils import get_available_gpus, grouper
 
-
+#REPLACE BY WHISPERX
 def initialize_whisperer(
     device: str, fp16: bool
 ) -> Tuple[whisper.Whisper, whisper.DecodingOptions]:
